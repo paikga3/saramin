@@ -1,0 +1,298 @@
+package db;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
+
+import org.eclipse.jdt.internal.compiler.apt.dispatch.RoundDispatcher;
+
+import beans.AdviceBean;
+import beans.AdviceReBean;
+import javafx.application.Application;
+
+public class AdminDAO {
+	DataSource ds;
+	Connection con;
+	PreparedStatement ps;
+	ResultSet rs;
+	ArrayList<AdviceBean> list = new ArrayList<AdviceBean>();
+	ArrayList<AdviceReBean> adviceReBeanList = new ArrayList<AdviceReBean>();
+	AdviceBean AB = null;
+	AdviceReBean ARB = null;
+	
+	public AdminDAO() {
+		try {
+			Context init = new InitialContext();
+			ds = (DataSource) init.lookup("java:comp/env/jdbc/mariadb");
+			System.out.println("DB 연결 Ok");
+
+		} catch (Exception e) {
+			System.out.println("DB 연결 실패 : " + e);
+			return;
+		}
+	}
+	
+	
+	public void viewList(HttpServletRequest request, HttpServletResponse response) {
+		// 페이지당 글 수
+		int countPerPage = 10;
+		// 요청 페이지 번호
+		int pushPage = 0;
+		// 요청 페이지 없는 경우, 단순 조회
+		if (request.getParameter("pushPage") == null) {
+			pushPage = 1;
+		} else {
+			pushPage = Integer.parseInt(request.getParameter("pushPage"));
+		}
+
+		int startPage = ((pushPage - 1) * countPerPage) + 1;
+		int endPage = pushPage * countPerPage;
+		
+
+		// 총 게시글 수 조회 쿼리
+		String countSql = "SELECT COUNT(advice_no) FROM ADVICE adv";
+		
+		// 조인하여 정렬해서 가져오는 쿼리, 최근 날짜 순
+		// 글번호, 상담종류, 신청인이름, 상담신청날짜, 조회수, 답글수
+		String set = "SET @ROWNUM := 0";
+		String sql = 
+				"SELECT "
+				+ "ro, " //1
+				+ "member_no, " //2
+				+ "advice_no, " //3
+				+ "advice_type, " //4
+				+ "advice_content, " //5
+				+ "DATE_FORMAT(advice_date, '%y-%m-%d %H:%i') advice_date_s, " //6
+				+ "DATE_FORMAT(advice_redate, '%y-%m-%d %H:%i') advice_redate_s, " //7
+				+ "advice_count, " //8
+				+ "advice_re_count, " //9
+				+ "member_email, " //10
+				+ "member_pw, " //11
+				+ "member_name " //12
+				+ "FROM "
+						+ "(SELECT "
+						+ "(@ROWNUM := @ROWNUM + 1) AS ro, "
+						+ "advlist.* "
+						+ "FROM "
+								+ "(SELECT * FROM ADVICE adv INNER JOIN MEMBER mbr USING (member_no)) AS advlist "
+								+ "ORDER BY advlist.advice_no DESC) AS advlistordered "
+				+ "WHERE ro BETWEEN ? AND ?";
+		
+		try {
+			con = ds.getConnection();
+			
+			// 게시글 수 조회
+			ps = con.prepareStatement(countSql);
+			rs = ps.executeQuery();
+			while(rs.next()){
+				// 10의 배수 페이지 경우 한페이지 더나옴...
+				int page_no =  ((rs.getInt(1) / countPerPage)+1);
+				// view 페이지로 전달
+				request.setAttribute("page_no", page_no); 
+			}
+			
+			// SET 쿼리 실행
+			ps = con.prepareStatement(set);
+			ps.executeUpdate();
+			
+			// 게시글 목록 조회 실행
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, startPage);
+			ps.setInt(2, endPage);
+			rs = ps.executeQuery();
+			
+			while(rs.next()){
+				AB = new AdviceBean();
+						
+				AB.setMember_no(rs.getInt(2));
+				AB.setAdvice_no(rs.getInt(3));
+				AB.setAdvice_type(rs.getString(4));
+				AB.setAdvice_content(rs.getString(5));
+				AB.setAdvice_date(rs.getString(6));
+				AB.setAdvice_redate(rs.getString(7));
+				AB.setAdvice_count(rs.getInt(8));
+				AB.setAdvice_re_count(rs.getInt(9));
+				AB.setMember_email(rs.getString(10));
+				AB.setMember_name(rs.getString(12));
+				
+				list.add(AB);
+			}
+			
+			request.setAttribute("adviceArrayist", list);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+	
+		}finally {
+			if(rs!=null) try{rs.close();}catch(SQLException ex){}
+			if(ps!=null) try{ps.close();}catch(SQLException ex){}
+			if(con!=null) try{con.close();}catch(SQLException ex){}
+		}
+	}
+
+
+	// 상담 신청 세부 내용 보기
+	public void viewRe(HttpServletRequest request, HttpServletResponse response) {
+		
+		// 클릭한 상담글 번호
+		int advice_no = Integer.parseInt(request.getParameter("advice_no"));
+		
+		String sql = "SELECT "
+							+ "advice_re_no, " //1
+							+ "member_no, " //2
+							+ "member_name, " //3
+							+ "advice_content, " //4
+							+ "member_email, " //5
+							+ "DATE_FORMAT(advice_re_date, '%y-%m-%d %H:%i') date "//6
+					+ "FROM ADVICE_RE ar INNER JOIN MEMBER mbr USING (member_no)  "
+					+ "WHERE advice_no = ? "
+					+ "ORDER BY advice_re_no";
+
+		try {
+			con = ds.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, advice_no);
+			rs = ps.executeQuery();
+			
+			while(rs.next()){
+				ARB = new AdviceReBean();
+				
+				ARB.setAdvice_re_no(rs.getInt(1));
+				ARB.setMember_no(rs.getInt(2));
+				ARB.setMember_name(rs.getString(3));
+				ARB.setAdvice_content(rs.getString(4));
+				ARB.setMember_email(rs.getString(5));
+				ARB.setAdvice_re_date(rs.getString(6));
+
+				adviceReBeanList.add(ARB);
+			}
+			
+			request.setAttribute("adviceDetails", adviceReBeanList);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+	
+		}finally {
+			if(rs!=null) try{rs.close();}catch(SQLException ex){}
+			if(ps!=null) try{ps.close();}catch(SQLException ex){}
+			if(con!=null) try{con.close();}catch(SQLException ex){}
+		}
+	}
+
+
+	public void insert(HttpServletRequest request, HttpServletResponse response) {
+		/* 로그인한 회원 번호 get */
+		int member_no = 0;
+		try {
+			member_no = (Integer) request.getSession().getAttribute("member_no");
+		} catch (Exception e) {
+			System.out.println("비회원 요청");
+		}
+
+		// member_no를 insert 시 회원정보로 사용
+		if (member_no == 0) {
+			System.out.println("비회원");
+		} else {
+			
+			try {
+				con = ds.getConnection();
+				
+				String sql = "INSERT INTO ADVICE VALUES((SELECT MAX(advice_no)+1 FROM ADVICE ad), ?, ?, ?, SYSDATE(), NULL, 0, 0)";
+				ps = con.prepareStatement(sql);
+				ps.setInt(1, member_no);
+				ps.setString(2, request.getParameter("advice_type"));
+				ps.setString(3, request.getParameter("title"));				
+				ps.executeUpdate();
+				
+				int advice_no = 0;
+				sql = "SELECT MAX(advice_no) FROM ADVICE;";
+				ps = con.prepareStatement(sql);
+				rs = ps.executeQuery();
+				while(rs.next()){
+					advice_no = rs.getInt(1);
+				}
+				
+				sql = "INSERT INTO ADVICE_RE VALUES((SELECT MAX(advice_re_no)+1 FROM ADVICE_RE ar), ?, ?, ?, SYSDATE())";
+				ps = con.prepareStatement(sql);
+				ps.setInt(1, advice_no);
+				ps.setInt(2, member_no);
+				ps.setString(3, request.getParameter("advice_content"));		
+				ps.executeUpdate();
+				
+				System.out.println("상담 신청 완료");
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+		
+			}finally {
+				if(rs!=null) try{rs.close();}catch(SQLException ex){}
+				if(ps!=null) try{ps.close();}catch(SQLException ex){}
+				if(con!=null) try{con.close();}catch(SQLException ex){}
+			}	
+			
+		}
+	}
+
+
+	public void plusCount(HttpServletRequest request, HttpServletResponse response) {	
+		int maxPlusOne = 0;
+		
+		try {
+			con = ds.getConnection();
+			
+			String sql = "SELECT MAX(advice_count)+1 FROM ADVICE adv WHERE advice_no = ?";
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, Integer.parseInt(request.getParameter("advice_no")));
+			rs = ps.executeQuery();
+			while(rs.next()){
+				maxPlusOne = rs.getInt(1);
+			}
+			
+			sql="UPDATE ADVICE SET advice_count = ? WHERE advice_no = ?";
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, maxPlusOne);			
+			ps.setInt(2, Integer.parseInt(request.getParameter("advice_no")));
+			rs = ps.executeQuery();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+	
+		}finally {
+			if(rs!=null) try{rs.close();}catch(SQLException ex){}
+			if(ps!=null) try{ps.close();}catch(SQLException ex){}
+			if(con!=null) try{con.close();}catch(SQLException ex){}
+		}
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

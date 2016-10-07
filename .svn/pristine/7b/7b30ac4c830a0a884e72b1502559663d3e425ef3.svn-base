@@ -1,0 +1,21 @@
+package beans;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class RegularTest {
+
+	public static void main(String[] args) {
+		String target = "paikga3@daum.net";
+		String regex = "[A-Za-z0-9]+\\@(?:(?:naver\\.com)|(?:daum\\.net))";//
+		Pattern pattern = Pattern.compile(regex);
+		Matcher match = pattern.matcher(target);
+		if(match.matches()) {
+			System.out.println("가입가능한 아이디");
+		} else {
+			System.out.println("형식에 맞지 않음");
+		}
+		//loginMemberInfo
+	}
+
+}

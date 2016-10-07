@@ -1,0 +1,27 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
+<tiles:insertDefinition name="in.header" />
+<section id="in_notice_outer"
+	style="width: 80%; height: 400px; margin-left: 10%; margin-top: 50px; font-size: 20px;">
+
+	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+	글번호###상담종류###상담신청내용###신청날짜###답변날짜###조회수###답글수###회원메일###회원이름
+	<hr />
+	<c:forEach var="i" items="${adviceArrayist}">
+		${i.advice_no}&nbsp;&nbsp;&nbsp;
+		${i.advice_type}&nbsp;&nbsp;&nbsp;
+		${i.advice_content}&nbsp;&nbsp;&nbsp;
+		${i.advice_date}&nbsp;&nbsp;&nbsp;
+		${i.advice_redate}&nbsp;&nbsp;&nbsp;
+		${i.advice_count}&nbsp;&nbsp;&nbsp;
+		${i.advice_re_count}&nbsp;&nbsp;&nbsp;
+		${i.member_email}&nbsp;&nbsp;&nbsp;
+		${i.member_name}&nbsp;&nbsp;&nbsp;
+		<hr />
+	</c:forEach>
+
+</section>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+	<definition name="in.header" template="/layouts/header.jsp">
+		<put-attribute name="title" value="일을 찾는 사람들" />
+		<put-attribute name="style" value="/tiles/in_tile_header.jsp" />
+	</definition>
+	<definition name="in.header.cal" extends="in.header">
+		<put-attribute name="title" value="연봉계산기" />
+		<put-attribute name="style" value="/tiles/in_tile_cal.jsp" />
+	</definition>
+	<definition name="in.header.login" extends="in.header">
+		<put-attribute name="title" value="로그인" />
+		<put-attribute name="style" value="/tiles/in_tile_login.jsp" />
+	</definition>
+	
+	<definition name="in.header.aptitude" extends="in.header">
+		<put-attribute name="title" value="적성검사"/>
+		<put-attribute name="style" value="/tiles/in_tile_aptitude.jsp"></put-attribute>
+	</definition>
+	
+	<definition name="in.header.search" extends="in.header">
+		<put-attribute name="title" value="직종별 검색"/>
+		<put-attribute name="style" value="/tiles/in_tile_search.jsp"></put-attribute>
+	</definition>
+	
+	<definition name="in.header.freeboard" extends="in.header">
+		<put-attribute name="title" value="자유게시판 글목록"></put-attribute>
+		<put-attribute name="style" value="/tiles/in_tile_freeboard.jsp"></put-attribute>
+	</definition>
+</tiles-definitions>

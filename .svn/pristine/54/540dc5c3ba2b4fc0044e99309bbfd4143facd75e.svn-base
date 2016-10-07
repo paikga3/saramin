@@ -1,0 +1,129 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="java.util.Properties, beans.MemberBean" %>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<tiles:insertDefinition name="freeboard_detail" />
+<%
+	Properties prop = new Properties();
+	prop.load(new MemberBean().getClass().getResourceAsStream("../properties/request.prop"));
+	String url = prop.getProperty(request.getParameter("type"));
+	request.setAttribute("url", url);
+%>
+	<div id="in_wrapper_section">
+		<div id="free_wrapper">
+			<div style="float:left;margin-top:10px;">
+				<a id="goList" href="#" style="color:#4335EF;font-weight: bold;">리스트로 가기</a>
+				<form action="${url }" method="post">
+					<input type="hidden" name="page" value="${requestScope.page }"/>	
+				</form>
+			</div>
+			<div id="free_write">
+				<span>새 글 쓰기</span>
+			</div>
+			
+			<div id="free_content">
+				<div id="free_content_upper">
+					<div id="free_intro">
+						<div style="margin-left:10px;"><span>${requestScope.bean.freeboard_alias }</span></div>
+						<div style="margin-left:10px; margin-top:5px;"><span>${requestScope.bean.passTime }</span></div>
+					</div>
+				
+					<div id="free_content_center">
+						<div>
+							<span>답글수 ${requestScope.bean.freeboard_replyCount }</span>
+							<span style="margin-left:20px;">조회수 ${requestScope.bean.freeboard_readCount }</span>
+						</div>
+					</div>
+				</div>
+			
+				<div style="clear:both;">
+					<div style="float:left;width:810px;">
+						<div id="free_title">
+							<div class="free_title_inner"><span># ${requestScope.bean.freeboard_no }</span></div>
+							<div class="free_title_inner"><span>${requestScope.bean.freeboard_title }</span></div>
+						</div>
+						<div id="content">
+							<span>
+								${requestScope.bean.freeboard_contents }
+							</span>
+						</div>
+					</div>
+					<div id="free_right">
+						<p id="free_recommand">추천하기</p>
+						<p style="margin-top:10px;clear:both;">${requestScope.bean.freeboard_recommand }</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div id="reply">
+			<div id="reply_count">
+				<span>답변 ${requestScope.bean.freeboard_replyCount }개</span>
+			</div>
+			
+			<c:forEach var="item" items="${requestScope.replyList }">
+				<div class="reply_wrapper">
+					<div class="reply_upper">
+						<div class="reply_upper_left">
+							<div class="reply_alias"><span>${item.freeboard_alias }</span></div>
+							<div class="reply_passtime"><span>${item.passTime }</span></div>
+						</div>
+				
+						<div class="reply_upper_right">
+							<p class="reply_upper_recommand">추천하기</p>
+							<div class="reply_upper_count"><span>${item.freeboard_recommand }</span></div>
+						</div>
+					</div>
+					<div class="reply_content">
+						<span>${item.freeboard_contents }</span>
+					</div>
+				</div>
+			</c:forEach>
+			
+			
+		
+		</div>
+		
+		<script type="text/javascript">
+			$('#free_right').css('height', $('#free_title').height() + $('#content').height() + 21 + 'px');
+			$('#reply').css('margin-top', $('#free_right').height() + 150 + 'px');
+			
+			$('#goList').click(function() {
+				$(this).next('form').trigger('submit');
+				return false;
+			}).hover(function() {
+				$(this).css('text-decoration', 'underline');
+			}, function() {
+				$(this).css('text-decoration', 'none');
+			});
+			
+			$('#free_write').hover(function() {
+				$(this).css({
+					backgroundColor: '#F95948',
+					cursor: 'pointer'
+				});
+			}, function() {
+				$(this).css({
+					backgroundColor: '#30CE4E',
+					cursor: 'default'
+				});
+			});
+			
+			$('#free_recommand').hover(function() {
+				$(this).css({
+					backgroundColor: '#F95948',
+					cursor: 'pointer'
+				});
+			}, function() {
+				$(this).css({
+					backgroundColor: '#30CE4E',
+					cursor: 'default'
+				});
+			});
+		</script>
+	
+	</div>
+	
+</body>
+</html>

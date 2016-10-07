@@ -1,0 +1,157 @@
+package run;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import beans.FreeBoardWriteBean;
+import controller.Action;
+import structure.Board;
+import db.FreeBoardDAO;
+
+import java.util.*;
+import java.text.*;
+
+public class BoardRun implements Board {
+
+	@Override
+	public Action add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		request.setCharacterEncoding("UTF-8");
+		
+		FreeBoardDAO bDAO = new FreeBoardDAO();
+		FreeBoardWriteBean write = new FreeBoardWriteBean();
+		
+		write.setFreeboard_alias(request.getParameter(""));
+		write.setFreeboard_title(request.getParameter(""));
+		write.setFreeboard_contents(request.getParameter(""));
+		write.setFreeboard_readCount(Integer.parseInt(request.getParameter("")));
+		write.setFreeboard_recommand(Integer.parseInt(request.getParameter("")));
+		write.setFreeboard_replyCount(Integer.parseInt(request.getParameter("")));
+		//date는 DAO에서 sysdate로, 글번호는 rownum으로 자동지정합시다.
+		
+		
+		//bDAO.글등록메소드(bBean);
+		
+		Action action = new Action();
+		action.setSimpleMove(true);
+		action.setPath("/url");
+		return action; //이해가 잘 안되는 부분으로 설명 부탁드립니다
+		
+		// Parameter들의 writer, title, content들의 밸류들로 boardBean 셋팅을 했습니다. 
+		// 최종적으로 boardBean.add를 했습니다.
+		
+		/*
+		
+		우선 위에서부터 살펴보니깐 게시글에 대한 내용을 jsp에서 request파라미터에 실어서 서블릿에서 처리하려고 하시는데
+		그거 보다는 jsp에서 빈객체를 생성하시고 거기에 게시글에 대한 내용을 담아서 빈객체 하나만 request의 영역에 담아(setAttribute메서드 사용)
+		서블릿에서는 request로부터 빈객체를 얻어와 바로 활용하는 것이 좋을 거 같습니다.
+		 
+		Action클래스는 페이지 이동과 관련이 있습니다.
+		페이지이동은 포워딩방식과 리다이렉트 방식이 있습니다.
+		두 방식의 차이점은 포워딩방식은 요청내용이 계속 이어져서 다음페이지로 전달됩니다. (response되어지지 않은상태입니다.)
+		리다이렉트 방식은 response되어지고 처음 리다이렉트할 때 지정했었던 페이지로 재요청합니다.
+		
+		이것을 용도에 따라 포워딩을 해야할 때  setSimpleMove(false) 가 있고 
+		리다이렉트를 해야할 때 setSimpleMove(true)
+		가 있습니다.
+		
+		단순히 무언가를 보여줄 때(게시판의 리스트를 단순히 보여줄 때)는 리다이렉트방식을 사용합니다.
+		그러나 서블릿에서 어떠한 처리를 하고(게시판의 리스트를 계산하여 얻어오고) 그 결과를 통해 view에 뿌리고자 할 때
+		그 때 그 결과를 request에 실어서 보낼 때  바로 그 때 포워딩 방식을 사용합니다.
+		 
+	     */
+		
+		
+		
+		
+		
+		
+		
+		
+	}
+
+	@Override
+	public Action delete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		
+		HttpSession httpsession = request.getSession();
+		int memberno = (int) httpsession.getAttribute("member_no");
+		
+		
+	return null;	
+		// TODO Auto-generated method stu
+	}
+
+	@Override
+	public Action modify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		
+		HttpSession httpsession = request.getSession();
+		int memberno = (int) httpsession.getAttribute("member_no");
+		
+		
+		
+		return null;
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public Action list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+	request.setCharacterEncoding("UTF-8");	
+		
+	GregorianCalendar calendar = new GregorianCalendar();
+	SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHH");
+	FreeBoardDAO bDAO = new FreeBoardDAO();
+	FreeBoardWriteBean write = new FreeBoardWriteBean();
+	//일단 현재 시간을 구합니다
+	int cTime = Integer.parseInt(format.format(calendar.getTime()));
+	//bDAO.메소드()로 데이터베이스 저장된 글들의 regDate를 불러온다. 그리고 형변환으로 int date[] = 
+	//ArrayList에 저장 되었다면
+	
+	List<FreeBoardWriteBean> list = bDAO.(메소드); 
+	int date[] = new int[list.size()];
+	
+	int time = 0;
+	
+	for(int i = 0 ; i < list.size(); i++){
+		
+		date[i]=Integer.parseInt(list.get(i).getRegDate()));
+	
+		int time = cTime - date[i];
+		
+		if(time <= 24){
+			request.setAttribute("hour["+i+"]", time+" 시간 전 글입니다");
+		}else if..
+	}
+		//이런 식으로 해줍니다.
+		
+		return null;
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public Action reply(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		return null;
+		// TODO Auto-generated method stub
+
+	}
+	
+	public Action read(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		return null;
+		// TODO Auto-generated method stub
+
+	}
+	
+	public Action recommend(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		return null;
+		// TODO Auto-generated method stub
+
+	}
+
+}

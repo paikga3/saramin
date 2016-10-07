@@ -1,0 +1,57 @@
+-- MySQL dump 10.13  Distrib 5.7.9, for Win64 (x86_64)
+--
+-- Host: share.hoonnn.org    Database: JSPProjects
+-- ------------------------------------------------------
+-- Server version	5.5.5-10.1.12-MariaDB
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `FREEBOARD_WRITE`
+--
+
+DROP TABLE IF EXISTS `FREEBOARD_WRITE`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `FREEBOARD_WRITE` (
+  `FREEBOARD_NO` int(11) NOT NULL,
+  `FREEBOARD_REPLYCOUNT` int(11) NOT NULL,
+  `FREEBOARD_READCOUNT` int(11) NOT NULL,
+  `FREEBOARD_RECOMMAND` int(11) NOT NULL,
+  `FREEBOARD_ALIAS` varchar(40) NOT NULL,
+  `FREEBOARD_TITLE` varchar(60) NOT NULL,
+  `FREEBOARD_CONTENTS` varchar(6000) NOT NULL,
+  `FREEBOARD_REGDATE` datetime NOT NULL,
+  PRIMARY KEY (`FREEBOARD_NO`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `FREEBOARD_WRITE`
+--
+
+LOCK TABLES `FREEBOARD_WRITE` WRITE;
+/*!40000 ALTER TABLE `FREEBOARD_WRITE` DISABLE KEYS */;
+INSERT INTO `FREEBOARD_WRITE` VALUES (1,0,0,0,'진영화','테스트글1','테스트중입니다1','2016-03-31 23:51:58'),(2,0,0,0,'홍길동','테스트글2','테스트중입니다2','2016-03-30 00:00:38'),(3,0,0,10,'김구라','테스트글3','테스트중입니다3','2016-03-30 00:01:01'),(4,0,0,0,'이순신','테스트글4','테스트중입니다4','2016-03-30 00:01:15'),(5,0,0,0,'강감찬','테스트글5','테스트중입니다5','2016-03-30 00:01:37'),(6,0,0,0,'차예린','테스트글6','테스트중입니다6','2016-03-30 00:01:59'),(7,0,0,0,'주성욱','테스트글7','테스트중입니다7','2016-03-30 00:02:18'),(8,0,0,0,'이연걸','테스트글8','테스트중입니다8','2016-03-30 00:02:34'),(9,0,0,0,'토스트','테스트글9','테스트중입니다9','2016-03-30 00:02:50'),(10,0,0,0,'이건희','테스트글10','테스트중입니다10','2016-03-30 00:03:14'),(11,0,0,0,'전태규','테스트글11','테스트중입니다11','2016-03-30 00:03:33'),(12,0,0,0,'이영호','테스트글12','테스트중입니다12','2016-03-30 00:03:53'),(13,0,0,0,'백종현','테스트','잘가나요','2016-03-31 15:27:20'),(14,0,5,0,'진영화','XtraDB에서는 위와 같은 악순환을 막기 위해서','테스트중입니다1','2016-04-01 00:57:05');
+/*!40000 ALTER TABLE `FREEBOARD_WRITE` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2016-04-04  8:32:26

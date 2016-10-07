@@ -1,0 +1,31 @@
+package db;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Properties;
+
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+public class FreeBoardRepliedDAO {
+	private DataSource ds;
+	private Connection con;
+	private PreparedStatement ps;
+	private ResultSet rs;
+	private String sql;
+	
+	public FreeBoardRepliedDAO() {
+		try {
+			InitialContext init = new InitialContext();
+			Properties prop = new Properties();
+			prop.load(this.getClass().getResourceAsStream("../config.prop"));
+			ds = (DataSource)init.lookup(prop.getProperty("poolName"));
+			System.out.println("DataSource 얻어오기 성공");
+		} catch (NamingException | IOException e) {
+			e.printStackTrace();
+		}
+	}
+}

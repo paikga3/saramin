@@ -1,0 +1,83 @@
+package controller;
+
+import java.io.IOException;
+import java.util.Date;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import run.FreeBoardRun;
+import structure.Board;
+
+public class BoardController extends HttpServlet {
+
+	private static final long serialVersionUID = 1L;
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		processing(request, response);
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		processing(request, response);
+	}
+
+	protected void processing(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		request.setCharacterEncoding("UTF-8");
+
+		String path = request.getContextPath();
+		String uri = request.getRequestURI();
+		// uri - path = call
+		// 컨트롤러로 들어오는 세부 요청 분리
+		String call = uri.substring(path.length());
+		Date today = new Date();
+		System.out.println("(" + today + ") 요청: " + call);
+
+		Action action = null;
+		Board board = null;
+		
+
+		if (call.equals("/add.board")) {
+			call = "/add.jsp";
+			// 예시
+			board = new FreeBoardRun(); //객체는 위에서 생성해주고 메소드만 해줍시다
+			action = board.add(request, response);
+
+		} else if (call.equals("/list.board")) {
+			board = new FreeBoardRun();
+			action = board.list(request, response);
+		} else if (call.equals("/delete.board")) {
+			call = "/delete.jsp";
+			
+			board = new FreeBoardRun();
+			action = board.delete(request, response);
+		} else if (call.equals("/modify.board")) {
+			call = "/modify.jsp";
+			
+			board = new FreeBoardRun();
+			action = board.modify(request, response);
+		} else if (call.equals("/reply.board")) {
+			call = "/reply.jsp";
+			
+			board = new FreeBoardRun();
+			action = board.reply(request, response);
+		}
+
+		if (action != null) {
+			if (action.getSimpleMove()) {
+				response.sendRedirect(action.getPath());
+			} else {
+				RequestDispatcher dispatcher = request.getRequestDispatcher(action.getPath());
+				dispatcher.forward(request, response);
+			}
+		}
+		
+	}
+
+}

@@ -1,0 +1,65 @@
+package controller;
+
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import run.AdminRun;
+import structure.Admin;
+import structure.Move;
+
+public class AdminController extends HttpServlet {
+
+	private static final long serialVersionUID = 1L;
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		processing(request, response);
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		processing(request, response);
+	}
+
+	protected void processing(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		request.setCharacterEncoding("UTF-8");
+
+		String path = request.getContextPath();
+		String uri = request.getRequestURI();
+		// uri - path = call
+		// 컨트롤러로 들어오는 세부 요청 분리
+		String call = uri.substring(path.length());
+		System.out.println("요청 : " + call);
+
+		Action action = null;
+		Admin admin = null;
+		Move move = null;
+		
+		// 상담신청 
+		if (call.equals("/adviceRequset.admin")) {
+			move = new AdminRun();
+			action = move.move(request, response);
+
+		} else if (call.equals("")) {
+
+		}
+		
+		if (action != null) {
+			if (action.getSimpleMove()) {
+				response.sendRedirect(action.getPath());
+			} else {
+				RequestDispatcher dispatcher = request.getRequestDispatcher(action.getPath());
+				dispatcher.forward(request, response);
+			}
+		}
+	}
+
+}

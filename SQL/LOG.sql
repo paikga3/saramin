@@ -1,0 +1,16 @@
+CREATE TABLE LOG (
+log_no INT NOT NULL PRIMARY KEY,
+member_no INT NOT NULL,
+login_ip VARCHAR(20) NOT NULL,
+login_time DATETIME,
+logout_time DATETIME);
+
+SELECT * FROM LOG ORDER BY log_no DESC;
+
+SELECT MAX(log_no) FROM LOG log;
+INSERT INTO LOG VALUES ((SELECT MAX(log_no)+1 FROM LOG log), 1000, 'ip', SYSDATE(), null);
+
+#조회, 최근날짜순
+SELECT * FROM MEMBER JOIN LOG USING (member_no) ORDER BY login_time DESC;
+
+SELECT COUNT(log_no) FROM LOG;

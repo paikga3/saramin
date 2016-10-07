@@ -1,0 +1,27 @@
+$(function () {
+	function updateTime() {
+        var date = new Date();
+        var year = date.getFullYear();
+        var month = date.getMonth();
+        month = month < 10 ? "0" + month : month;
+        var day = date.getDate();
+        day = day < 10 ? "0" + day : day;
+        var hour = date.getHours();
+        var ampm = hour > 12 ? "오후" : "오전";
+        hour = hour > 12 ? hour - 12 : hour;
+        hour = hour < 10 ? "0" + hour : hour;
+        var minite = date.getMinutes();
+        minite = minite < 10 ? "0" + minite : minite;
+        var seconds = date.getSeconds();
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+        var timeText = year + "-" + month + "-" + day + " " + ampm + " " + hour + ":" + minite + ":" + seconds;
+        $("#in_timeText").text(timeText);
+        setTimeout(updateTime, 1000);
+    }
+    
+    $('.in_userInterface').hover(function(){
+    	$(this).find("svg").find("path").attr("fill", "#F7AC16");
+    }, function() {
+    	$(this).find("svg").find("path").attr("fill", "#00D346");           	
+    });            
+});

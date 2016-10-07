@@ -1,0 +1,4 @@
+reg=listByReg.board
+reply=listByReplyCount.board
+read=listByReadCount.board
+recommand=listByRecommand.board

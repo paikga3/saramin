@@ -1,0 +1,408 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<tiles:insertDefinition name="in.header.freeboard" />
+<script src="<%=request.getContextPath()%>/js/jquery-ui/jquery-ui.js"></script>
+	<div id="in_wrapper_section">
+		<div id="free_wrapper">
+		
+		<div id="free_form" style="width:600px;height:600px;margin-left:300px;text-align:left;display:none;position:absolute;background:white;">
+        
+        <div style="margin-top:30px;margin-left:20px;">
+            <span>글쓴이 : </span>
+            <span id="free_name">${sessionScope.loginMemberInfo.member_name }</span>
+
+        </div>
+		<form id="free_send" action="free_add.board" method="post">
+        <div style="margin-top:20px;margin-left:20px;">
+            <span>제목 : </span>
+            <input id="title" style="width:500px;" name="title"/>
+        </div>
+
+        <div style="margin-top:20px;margin-left:20px;">
+            <p>내용 : </p>
+            <textarea style="width:550px;height:400px;" name="content"></textarea>
+            <input type="hidden" name="type" value="${requestScope.type}"/>
+            <input type="hidden" name="page" value="${requestScope.page }"/>
+            <input type="hidden" name="name" value="${sessionScope.loginMemberInfo.member_name }"/>
+        </div>
+		</form>
+        <div style="margin-top:5px;margin-left:20px;">
+            <button id="reg">등록</button>
+            <button id="can">취소</button>
+        </div>
+        
+		</div>
+			<div id="free_upper_layout_1">
+				<div id="free_title">
+					<span>자유게시판</span>
+				</div>
+				<div id="free_write">
+					<span id="free_write_link" style="color:white;">새 글 쓰기</span>
+				</div>
+				<script type="text/javascript">
+					$('#free_write').click(function() {						
+						if($('#free_name').text() == '') {
+							alert("로그인을 하셔야 글을 쓰실 수 있습니다.");
+							location.replace("<%=request.getContextPath()%>/loginMenu.member");
+						}
+						
+						$('#free_form').show('size',{ percent: 100 }, 500);
+						return false;
+					});
+					
+					$('#can').click(function() {
+						$('#free_form').hide('size',{ percent: 0 }, 500);
+						return false;
+					});
+					
+					$('#reg').click(function() {
+						$('#free_send').trigger('submit');
+						return false;
+					});
+					
+					
+				</script>
+				
+			</div>
+			<div id="free_upper_layout_2">
+				<div>
+					<ul>
+						<c:choose>
+							<c:when test="${requestScope.type == 'reg' }">
+								<c:set var="url" value="${pageContext.request.contextPath }/listByReg.board"></c:set>
+								<li class="free_sort">
+									<a href="#" class="free_sort_on">최신순</a>
+									<form action="${url }" method="post">
+										<input type="hidden" name="page" value="${requestScope.page }"/>	
+									</form>
+								</li>
+								<li class="free_sort">
+									<a href="#">추천순</a>
+									<form action="${pageContext.request.contextPath }/listByRecommand.board" method="post">
+										<input type="hidden" name="page" value="${requestScope.page }"/>	
+									</form>									
+								</li>
+								<li class="free_sort">
+									<a href="#">댓글순</a>
+									<form action="${pageContext.request.contextPath }/listByReplyCount.board" method="post">
+										<input type="hidden" name="page" value="${requestScope.page }"/>	
+									</form>									
+								</li>
+								<li class="free_sort">
+									<a href="#">조회순</a>
+									<form action="${pageContext.request.contextPath }/listByReadCount.board" method="post">
+										<input type="hidden" name="page" value="${requestScope.page }"/>	
+									</form>									
+								</li>
+							</c:when>
+							<c:when test="${requestScope.type == 'recommand' }">
+								<c:set var="url" value="${pageContext.request.contextPath }/listByRecommand.board"></c:set>
+								<li class="free_sort">
+									<a href="#">최신순</a>
+									<form action="${pageContext.request.contextPath }/listByReg.board" method="post">
+										<input type="hidden" name="page" value="${requestScope.page }"/>	
+									</form>
+								</li>
+								<li class="free_sort">
+									<a href="#" class="free_sort_on">추천순</a>
+									<form action="${url }" method="post">
+										<input type="hidden" name="page" value="${requestScope.page }"/>	
+									</form>									
+								</li>
+								<li class="free_sort">
+									<a href="#">댓글순</a>
+									<form action="${pageContext.request.contextPath }/listByReplyCount.board" method="post">
+										<input type="hidden" name="page" value="${requestScope.page }"/>	
+									</form>									
+								</li>
+								<li class="free_sort">
+									<a href="#">조회순</a>
+									<form action="${pageContext.request.contextPath }/listByReadCount.board" method="post">
+										<input type="hidden" name="page" value="${requestScope.page }"/>	
+									</form>									
+								</li>								
+							</c:when>
+							<c:when test="${requestScope.type == 'reply' }">
+								<c:set var="url" value="${pageContext.request.contextPath }/listByReplyCount.board"></c:set>
+								<li class="free_sort">
+									<a href="#">최신순</a>
+									<form action="${pageContext.request.contextPath }/listByReg.board" method="post">
+										<input type="hidden" name="page" value="${requestScope.page }"/>	
+									</form>
+								</li>
+								<li class="free_sort">
+									<a href="#">추천순</a>
+									<form action="${pageContext.request.contextPath }/listByRecommand.board" method="post">
+										<input type="hidden" name="page" value="${requestScope.page }"/>	
+									</form>									
+								</li>
+								<li class="free_sort">
+									<a href="#" class="free_sort_on">댓글순</a>
+									<form action="${url }" method="post">
+										<input type="hidden" name="page" value="${requestScope.page }"/>	
+									</form>									
+								</li>
+								<li class="free_sort">
+									<a href="#">조회순</a>
+									<form action="${pageContext.request.contextPath }/listByReadCount.board" method="post">
+										<input type="hidden" name="page" value="${requestScope.page }"/>	
+									</form>									
+								</li>								
+							</c:when>
+							<c:when test="${requestScope.type == 'read' }">
+								<c:set var="url" value="${pageContext.request.contextPath }/listByReadCount.board"></c:set>
+								<li class="free_sort">
+									<a href="#">최신순</a>
+									<form action="${pageContext.request.contextPath }/listByReg.board" method="post">
+										<input type="hidden" name="page" value="${requestScope.page }"/>	
+									</form>
+								</li>
+								<li class="free_sort">
+									<a href="#">추천순</a>
+									<form action="${pageContext.request.contextPath }/listByRecommand.board" method="post">
+										<input type="hidden" name="page" value="${requestScope.page }"/>	
+									</form>									
+								</li>
+								<li class="free_sort">
+									<a href="#">댓글순</a>
+									<form action="${pageContext.request.contextPath }/listByReplyCount.board" method="post">
+										<input type="hidden" name="page" value="${requestScope.page }"/>	
+									</form>									
+								</li>
+								<li class="free_sort">
+									<a href="#" class="free_sort_on">조회순</a>
+									<form action="${url }" method="post">
+										<input type="hidden" name="page" value="${requestScope.page }"/>	
+									</form>									
+								</li>								
+							</c:when>														
+						</c:choose>	
+					</ul>
+				</div>
+				<div style="float:right;">
+					<div style="float:left;margin-top:-5px;">
+						<input type="text" style="width:300px;height:20px;"/>
+					</div>
+					<div id="free_search">
+						<span>검색하기</span>
+					</div>
+				</div>
+			</div>
+			
+			<div id="free_contents_layout">
+				<c:forEach var="item" items="${requestScope.list }" varStatus="status">
+				<c:choose>
+					<c:when test="${status.index % 2 == 1}">
+						<div class="free_content_odd">
+							<div>
+								<div class="free_content_subject">
+									<div class="free_content_subject_no"><span>#${item.freeboard_no }</span></div>
+									<div class="free_content_subject_con">
+										<a class="free_content_link" href="#">${item.freeboard_title }</a>
+										<form action="detail.board" method="post">
+											<input type="hidden" name="free_no" value="${item.freeboard_no }"/>
+											<input type="hidden" name="page" value="${requestScope.page }"/>
+											<input type="hidden" name="type" value="${requestScope.type }"/>
+										</form>
+									</div>
+								</div>
+								<div class="free_content_etc">
+									<div><span>추천</span></div>
+									<div><span>${item.freeboard_recommand }</span></div>
+								</div>
+								<div class="free_content_etc">
+									<div><span>답글</span></div>
+									<div><span>${item.freeboard_replyCount }</span></div>
+								</div>
+								<div class="free_content_etc">
+									<div><span>조회수</span></div>
+									<div><span>${item.freeboard_readCount }</span></div>
+								</div>
+								<div class="free_content_etc">
+									<div><span>${item.freeboard_alias }</span></div>
+									<div><span>${item.passTime}</span></div>
+								</div>
+							</div>
+						</div>
+					</c:when>
+					<c:otherwise>
+						<div class="free_content_even">
+							<div>
+								<div class="free_content_subject">
+									<div class="free_content_subject_no"><span>#${item.freeboard_no }</span></div>
+									<div class="free_content_subject_con">
+										<a class="free_content_link" href="#">${item.freeboard_title }</a>
+										<form action="detail.board" method="post">
+											<input type="hidden" name="free_no" value="${item.freeboard_no }"/>
+											<input type="hidden" name="page" value="${requestScope.page }"/>
+											<input type="hidden" name="type" value="${requestScope.type }"/>
+										</form>										
+									</div>
+								</div>
+								<div class="free_content_etc">
+									<div><span>추천</span></div>
+									<div><span>${item.freeboard_recommand }</span></div>
+								</div>
+								<div class="free_content_etc">
+									<div><span>답글</span></div>
+									<div><span>${item.freeboard_replyCount }</span></div>
+								</div>
+								<div class="free_content_etc">
+									<div><span>조회수</span></div>
+									<div><span>${item.freeboard_readCount }</span></div>
+								</div>
+								<div class="free_content_etc">
+									<div><span>${item.freeboard_alias }</span></div>
+									<div><span>${item.passTime}</span></div>
+								</div>
+							</div>
+						</div>
+					</c:otherwise>
+				</c:choose>
+				</c:forEach>
+	
+				<!-- contents 레이아웃 끝지점 -->
+			</div>
+			<!-- 
+					request.setAttribute("page", page);
+					request.setAttribute("totalpage", totalPage);
+			 -->
+			<div id="free_numbering">
+				<c:choose>
+					<c:when test="${requestScope.totalpage <= 10}">
+						<c:forEach var="item" begin="1" end="${requestScope.totalpage }" varStatus="status">
+							<c:choose>
+							<c:when test="${status.index == page }">
+								<div class="free_numbering_current">
+									<a href="#">${page }</a>
+									<form action="${url }" method="post">
+										<input type="hidden" name="page" value="${status.index }"/>
+									</form>
+								</div>
+							</c:when>
+							<c:otherwise>
+								<div class="free_numbering_other">
+									<a href="#">${requestScope.page }</a>
+									<form action="${url }" method="post">
+										<input type="hidden" name="page" value="${status.index }"/>
+									</form>									
+								</div>
+							</c:otherwise>
+							</c:choose>
+						</c:forEach>
+					</c:when>
+					<c:otherwise>
+						<c:choose>
+							<c:when test="${requestScope.page <= 5 }">
+								<c:forEach var="item" begin="1" end="11" varStatus="status">
+									<c:choose>
+										<c:when test="${status.index == requestScope.page }">
+											<div class="free_numbering_current">
+												<a href="#">${status.index }</a>
+												<form action="${url }" method="post">
+													<input type="hidden" value="${status.index }"/>
+												</form>												
+											</div>
+										</c:when>
+										<c:when test="${status.index == 11 }">
+											<div class="free_numbering_other">
+												<a href="#">...</a>
+												<form action="${url }" method="post">
+													<input type="hidden" value="${status.index }"/>
+												</form>												
+											</div>											
+										</c:when>
+										<c:otherwise>
+											<div class="free_numbering_other">
+												<a href="#">${status.index }</a>
+												<form action="${url }" method="post">
+													<input type="hidden" value="${status.index }"/>
+												</form>											
+											</div>											
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+							</c:when>
+							<c:otherwise>
+								<c:choose>
+									<c:when test="${totalpage-5 - page <= 0 }">
+										<c:forEach var="item" begin="${totalpage-10 }" end="${totalpage }" varStatus="status">
+											<c:choose>
+												<c:when test="${status.index==page }">
+													<div class="free_numbering_current">
+														<a href="#">${status.index }</a>
+														<form action="${url }" method="post">
+															<input type="hidden" value="${status.index }"/>
+														</form>												
+													</div>													
+												</c:when>
+												<c:when test="${status.index==totalpage-10 }">
+													<div class="free_numbering_other">
+														<a href="#">...</a>
+														<form action="${url }" method="post">
+															<input type="hidden" value="${status.index-1 }"/>
+														</form>												
+													</div>												
+												</c:when>
+												<c:otherwise>
+													<div class="free_numbering_other">
+														<a href="#">${status.index }</a>
+														<form action="${url }" method="post">
+															<input type="hidden" value="${status.index }"/>
+														</form>												
+													</div>
+												</c:otherwise>
+											</c:choose>
+										</c:forEach>
+									</c:when>
+									<c:otherwise>
+										<c:forEach var="item" begin="${page-5 }" end="${page+6 }" varStatus="status">
+											<c:choose>
+												<c:when test="${status.index == page-5 }">
+													<div class="free_numbering_other">
+														<a href="#">...</a>
+														<form action="${url }" method="post">
+															<input type="hidden" value="${status.index-1 }"/>
+														</form>												
+													</div>												
+												</c:when>
+												<c:when test="${status.index == page+6 }">
+													<div class="free_numbering_other">
+														<a href="#">...</a>
+														<form action="${url }" method="post">
+															<input type="hidden" value="${status.index+1 }"/>
+														</form>												
+													</div>												
+												</c:when>
+												<c:when test="${status.index == page }">
+													<div class="free_numbering_current">
+														<a href="#">${status.index }</a>
+														<form action="${url }" method="post">
+															<input type="hidden" value="${status.index }"/>
+														</form>												
+													</div>
+												</c:when>
+												<c:otherwise>
+													<div class="free_numbering_other">
+														<a href="#">${status.index }</a>
+														<form action="${url }" method="post">
+															<input type="hidden" value="${status.index }"/>
+														</form>												
+													</div>												
+												</c:otherwise>
+											</c:choose>
+										</c:forEach>
+									</c:otherwise>
+								</c:choose>			
+							</c:otherwise>
+						</c:choose>
+					</c:otherwise>
+				</c:choose>
+			</div>
+		</div>
+	</div>
+	<script src="<%=request.getContextPath()%>/js/in_freeList.js"></script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+$('.free_sort > a:not(.free_sort_on)').hover(function() {
+	$(this).css("text-decoration", "underline");
+}, function() {
+	$(this).css("text-decoration", "none");
+});

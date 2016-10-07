@@ -1,0 +1,44 @@
+package run;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import controller.Action;
+import structure.Member;
+import structure.Move;
+
+public class MemberRun implements Member, Move {
+	
+	@Override
+	public Action move(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Action action = new Action();
+		action.setSimpleMove(true);
+		action.setPath("./pages/memberView/loginMenu.jsp");
+		return action;
+	}
+
+	@Override
+	public Action memberCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		return null;
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public Action join(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		return null;
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public Action login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		return null;
+		// TODO Auto-generated method stub
+
+	}
+
+}

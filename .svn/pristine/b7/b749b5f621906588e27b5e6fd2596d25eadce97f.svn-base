@@ -1,0 +1,69 @@
+package run;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import beans.MemberBean;
+import controller.Action;
+import db.MemberDAO;
+import structure.Member;
+
+public class MemberRun implements Member {
+	private int member = 0;
+	// 0 비회원, -1 비빌번호 불일치, 1 회원(로그인 가능)
+
+	MemberBean MB = new MemberBean();
+	MemberDAO MD = new MemberDAO();
+
+	@Override
+	public Action memberCheck(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		// DB에서 회원정보 확인
+		member = MD.memberCheck(request, MB);
+
+		return null;
+	}
+
+	@Override
+	public Action login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Action action = new Action();
+		
+		if (member == 0) {
+			// 비회원
+			request.getSession().setAttribute("loginResult", 0);
+			action.setSimpleMove(true);
+			action.setPath(request.getContextPath() + "/loginMenu.member");
+			
+		} else if (member == -1) {
+			// 비빌번호 불일치
+			request.getSession().setAttribute("loginResult", -1);
+			action.setSimpleMove(true);
+			action.setPath(request.getContextPath() + "/loginMenu.member");
+			
+		} else if (member == 1) {
+			// 세션에 로그인한 회원 번호 set
+			request.getSession().setAttribute("member_no", MB.getMember_no());
+			System.out.println("로그인 완료, 세션 저장");
+			request.getSession().setAttribute("loginResult", 1);
+			action.setSimpleMove(true);
+			action.setPath(request.getContextPath() + "/loginMenu.member");
+		}
+
+		return action;
+
+	}
+
+	
+	@Override
+	public Action join(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		return null;
+		// TODO Auto-generated method stub
+
+	}
+	
+}
+

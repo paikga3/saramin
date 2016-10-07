@@ -1,0 +1,109 @@
+package run;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import beans.FreeBoardWriteBean;
+import controller.Action;
+import db.FreeBoardDAO;
+import db.FreeBoardListType;
+import structure.Board;
+
+public class FreeBoardRun implements Board {
+	
+	private Action action;
+	private FreeBoardDAO dao;
+	
+	public FreeBoardRun() {
+		action = new Action();
+		dao = new FreeBoardDAO();
+	}
+	
+	@Override
+	public Action add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Action delete(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Action modify(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public Action reply(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+<<<<<<< .mine
+	public Action list(HttpServletRequest request, HttpServletResponse response, String arrangeType, Integer page) 
+=======
+	public Action list(HttpServletRequest request, HttpServletResponse response, String arrangeType, int page) 
+>>>>>>> .r251
+			throws ServletException, IOException {
+		ArrayList<FreeBoardWriteBean> list = null;
+		if (arrangeType.equals("reg")) {
+<<<<<<< .mine
+			list = dao.getList(page.intValue(), FreeBoardListType.FREEBOARD_REGDATE);
+=======
+			list = dao.getList(page, FreeBoardListType.FREEBOARD_REGDATE);
+>>>>>>> .r251
+			request.setAttribute("type", "reg");
+		} else if (arrangeType.equals("reply")) {
+<<<<<<< .mine
+			list = dao.getList(page.intValue(), FreeBoardListType.FREEBOARD_REPLYCOUNT);
+=======
+			list = dao.getList(page, FreeBoardListType.FREEBOARD_REPLYCOUNT);
+>>>>>>> .r251
+			request.setAttribute("type", "reply");
+		} else if (arrangeType.equals("read")) {
+<<<<<<< .mine
+			list = dao.getList(page.intValue(), FreeBoardListType.FREEBOARD_READCOUNT);
+=======
+			list = dao.getList(page, FreeBoardListType.FREEBOARD_READCOUNT);
+>>>>>>> .r251
+			request.setAttribute("type", "read");
+<<<<<<< .mine
+		} else {
+			list = dao.getList(page.intValue(), FreeBoardListType.FREEBOARD_RECOMMAND);
+=======
+		} else if (arrangeType.equals("recommand")){
+			list = dao.getList(page, FreeBoardListType.FREEBOARD_RECOMMAND);
+>>>>>>> .r251
+			request.setAttribute("type", "recommand");
+<<<<<<< .mine
+		} 
+=======
+		} else {
+			list = dao.getList(1, FreeBoardListType.FREEBOARD_REGDATE);
+			request.setAttribute("type", "reg");
+		}
+>>>>>>> .r251
+		
+		Integer totalPage = Integer.valueOf(dao.getTotalPageNum());
+		request.setAttribute("list", list);
+		request.setAttribute("page", page);
+		request.setAttribute("totalpage", totalPage);
+		request.setAttribute("page", page);
+		action.setPath("/pages/freeboardView/freeboardList.jsp");
+		action.setSimpleMove(false);
+		return action;
+	}
+
+}

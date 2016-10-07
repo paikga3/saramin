@@ -1,0 +1,52 @@
+package run;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import controller.Action;
+import structure.Board;
+
+public class BoardRun implements Board {
+
+	@Override
+	public Action add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		Action action = new Action();
+		action.setSimpleMove(true);
+		action.setPath("/url");
+		return action;
+
+	}
+
+	@Override
+	public Action delete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		return null;
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public Action modify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		return null;
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public Action list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		return null;
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public Action reply(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		return null;
+		// TODO Auto-generated method stub
+
+	}
+
+}

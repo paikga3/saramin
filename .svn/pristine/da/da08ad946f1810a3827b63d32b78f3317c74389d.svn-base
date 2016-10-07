@@ -1,0 +1,7 @@
+@CHARSET "UTF-8";
+.choice {margin-left: 20px;}
+.contents {float:left;height:52px; border-bottom:1px solid black;display:block;}
+.clear {display: none;clear:left;}
+.line1 {margin-top:20px;}
+.line2 {margin-top:14px;}
+#jobs_list > ul {list-style: :none;}

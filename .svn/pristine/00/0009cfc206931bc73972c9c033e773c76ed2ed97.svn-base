@@ -1,0 +1,21 @@
+@CHARSET "UTF-8";
+body { font-family: "굴림"; font-size: 12px; background: #CFFFDA; text-align:center; cursor:default;}
+a {text-decoration: none; color:black;}
+ul > li { float: left;list-style: none;}
+.in_nav_main_function_menu { margin-right: 10px; }
+.in_nav_side_function_menu { margin-right: 20px; }
+        
+#in_wrapper { width:100%;background:white;text-align:center;}
+#in_nav { width:1200px;height:72px; display:inline-block;}
+#in_main_link { font-size:33px;width:200px;text-align:center;float:left;padding-top:20px;padding-bottom:20px; }
+#in_nav_main_function { float:left; position:absolute; left: 1000px ;padding-top:30px;padding-bottom:30px;}
+#in_nav_side_function { float:right;padding-top:30px;padding-bottom:30px;}
+  
+#in_wrapper_section { width:1200px;display:inline-block;}
+#in_notice_outer { clear:both;margin-top:10px;}
+#in_notice_article_csList { width:300px;border:1px solid black;margin-right:100px;margin-left:50px; float:left;}
+#in_notice_article_csList_title { text-align:center;border-bottom:1px solid black;padding-top:5px;padding-bottom:5px;}
+#in_notice_article_top5ask { width:300px;border:1px solid black;float:left;}
+#in_notice_article_top5ask_title { text-align:center;border-bottom:1px solid black;padding-top:5px;padding-bottom:5px;}
+#in_notice_article_top5keyword { width:300px;border:1px solid black;float:left;margin-left:100px;}
+#in_notice_article_top5keyword_title { text-align:center;border-bottom:1px solid black;padding-top:5px;padding-bottom:5px;}

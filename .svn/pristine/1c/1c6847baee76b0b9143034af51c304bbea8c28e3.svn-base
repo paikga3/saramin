@@ -1,0 +1,14 @@
+CREATE TABLE ADVICE 
+(advice_no INT NOT NULL PRIMARY KEY,
+member_no INT NOT NULL, 
+advice_type VARCHAR(50) NOT NULL, 
+advice_content VARCHAR(2000) NOT NULL, 
+advice_date DATETIME NOT NULL, 
+advice_recontent VARCHAR(2000) NOT NULL,
+advice_redate DATETIME NOT NULL);
+
+USE JSPProjects;
+SELECT * FROM ADVICE;
+INSERT INTO ADVICE VALUES(0, 0, '상담종류', '신청내용', SYSDATE(), '답변내용', SYSDATE());
+SELECT MAX(advice_no)+1 FROM ADVICE;
+INSERT INTO ADVICE VALUES((SELECT MAX(advice_no)+1 FROM ADVICE ad), 0, '상담종류', '신청내용', SYSDATE(), '답변내용', SYSDATE());

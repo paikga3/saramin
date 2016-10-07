@@ -1,0 +1,90 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
+<tiles:insertDefinition name="in.header.search" />
+<div id="in_wrapper_section">
+	<div style="width:1200px;height:1000px;display:inline-block;text-align:left;">
+        <div id="form_div" style="background: #81E281;">
+            <div id="title" style="border-bottom:1px solid black;padding-top:15px;padding-bottom:15px;">
+                <span class="choice">검색조건</span>
+            </div>
+
+            <div class="choice" style="margin-top:10px;">
+                <div>
+                    <span>직종선택</span>
+                </div>
+                <div>
+                    <span>
+                        <input type="radio" id="jsp" name="job"/>
+                        <label for="jsp">JSP</label>
+                    </span>
+                    <span style="margin-left:300px;">
+                        <input type="radio" id="java" name="job"/>
+                        <label for="java">JAVA</label>
+                    </span>
+                </div>
+            </div>
+
+            <div class="choice" style="margin-top:10px;">
+                <div>
+                    <span>지역(서울)</span>
+                </div>
+                <div>
+                    <span>
+                        <input type="checkbox" name="area" id="seodaegu"/>
+                        <label for="seodaegu">서대문구</label>
+                    </span>
+                    <span style="margin-left:150px;">
+                        <input type="checkbox" name="area" id="gumcheongu"/>
+                        <label for="gumcheongu">금천구</label>
+                    </span>
+                    <span style="margin-left:150px;">
+                        <input type="checkbox" name="area" id="kwangjingu"/>
+                        <label for="kwangjingu">광진구</label>
+                    </span>
+                </div>
+            </div>
+
+            <div class="choice" style="margin-top:10px;">
+                <div>
+                    <span>학력</span>
+                </div>
+                <div>
+                    <select name="academic">
+                        <option>선택</option>
+                        <option value="g">고등학교 졸업</option>
+                        <option value="d23">대학졸업(2,3년)</option>
+                        <option value="d4">대학졸업(4년)</option>
+                        <option value="s">석사 졸업</option>
+                        <option value="b">박사 졸업</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="choice" style="margin-top:10px;">
+                <div>
+                    <span>연봉</span>
+                </div>
+                <div>
+                    <select name="salary">
+                        <option>선택</option>
+                        <option value="1800">1800만원이상</option>
+                        <option value="2000">2000만원이상</option>
+                        <option value="2200">2200만원이상</option>
+                        <option value="2400">2400만원이상</option>
+                        <option value="2600">2600만원이상</option>
+                        <option value="2800">2800만원이상</option>
+                        <option value="3000">3000만원이상</option>
+                        <option value="4000">4000만원이상</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="choice" style="padding-top:10px;padding-bottom:10px;">
+                <input type="submit" value="선택한 조건으로 검색하기" style="padding-top:10px;padding-bottom:10px;border-radius:5px;background-color:#EA9357; border-style:none;"/>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

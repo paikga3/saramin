@@ -1,0 +1,57 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
+	<tiles:insertDefinition name="in.header.aptitude" />
+<!-- 여기다가 작성 -->
+<!-- 	<div id="layout_wrapper" style="width:100%; text-align: center;"> -->
+		<form action="aptitude02.jsp">
+		<table id="screen1" style="display: inline;">
+			<tr>
+				<td>너는 누구냐</td>
+			</tr>
+			<tr>
+				<td>
+			
+				<input type="button" value="사람" id="btn1">
+				<input type="button" value="곤충">
+				<input type="button" value="동물">
+				</td>
+			</tr>
+			<tr>
+				<td><input type="submit" value="확인"></td>
+			</tr>
+				
+		</table>
+		</form>
+		
+		<table id="screen2" style="display: none;">
+			<tr>
+				<td>
+					<select>
+						<optgroup label="멤버">
+							<option>인간</option>
+							<option>버러지</option>
+							<option>동물</option>
+						</optgroup>
+					</select>
+				</td>
+			</tr>
+			
+		</table>
+		
+		
+	<!-- </div>		 -->
+	
+<script src="http://code.jquery.com/latest.js"></script>
+<script type="text/javascript">
+	$("#btn1").click(function() {
+		$("#screen1").hide();
+		$("#screen2").show();
+	});
+	
+	$(function() {
+		
+	});
+</script>
+</body>
+</html>

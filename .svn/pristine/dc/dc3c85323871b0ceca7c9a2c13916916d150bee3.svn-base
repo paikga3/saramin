@@ -1,0 +1,176 @@
+function check(f){
+	var chk = 0;
+	
+	//지역
+	var area = "";
+	var area_cd1="";
+	area = document.getElementsByName('area[]');
+	for(a=0;a<area.length;a++){
+		if(area[a].checked){
+			area_cd1=area_cd1+area[a].value+"|";
+			chk++;
+		}
+	}
+	f.area_cd.value=area_cd1.substring(0,area_cd1.length-1);
+	
+	//지역상세
+	var areaSub = document.getElementsByName('areaSubCode[]');
+	var areaSub_cd = '';
+	for(i=0; i < areaSub.length; i++){
+		if(areaSub[i].checked){
+			areaSub_cd = areaSub_cd+areaSub[i].value+"|";
+			chk++;
+		}
+	}
+	f.areaSub_cd.value = areaSub_cd.substring(0, areaSub_cd.length-1);
+	
+	//학력
+	if($('firstEdu').value){
+		f.firstEdu.value = $('firstEdu').value;
+		chk++;
+	}
+	if($('secondEdu').value){
+		f.secondEdu.value = $('secondEdu').value;
+		chk++;
+	}
+	if($('educationNoneChk').checked){
+		f.educationNone.value = $('educationNoneChk').value;
+		chk++;
+	} 
+	
+	//경력
+	var career = "";
+	var career_lv = "";
+	career = document.getElementsByName('career[]');
+	for(a=0;a<career.length;a++){
+		if(career[a].checked){
+			career_lv=career_lv+career[a].value+"|";
+			chk++;
+		}
+	}
+	f.career.value=career_lv.substring(0,career_lv.length-1);
+	if($('careerlimit1').value){
+		f.careerlimit1.value = $('careerlimit1').value;
+		chk++;
+	}
+	if($('careerlimit2').value){
+		f.careerlimit2.value = $('careerlimit2').value;
+		chk++;
+	} 
+	
+
+	//연봉
+	if($('firstSal').value){
+		f.firstSal.value = $('firstSal').value;
+		chk++;
+	}
+	if($('secondSal').value){
+		f.secondSal.value = $('secondSal').value;
+		chk++;
+	}
+	if($('salaryChk').checked){
+		f.salary.value = $('salaryChk').value;
+		chk++;
+	}
+	if($('salaryRuleChk').checked){
+		f.salaryRule.value = $('salaryRuleChk').value;
+		chk++;
+	}
+	
+	if( $('search_quick_apply') && $('search_quick_apply').checked == true ) {
+	    f.quick_apply.value = 'y';
+	    chk++;
+	}
+	
+	if(chk > 0 ){
+		f.list.value= "search";
+		f.submit();
+	}else{
+		f.list.value= "";
+		f.submit();
+	}
+}
+
+function resetCheck(f){
+	//지역
+	area = document.getElementsByName('area[]');
+	for(a=0;a<area.length;a++){
+		if(area[a].checked){
+			area[a].checked =false;
+			document.getElementById('area_'+area[a].value).next().style.backgroundColor = '';
+		}
+	}
+	f.area_cd.value='';
+	
+	//지역상세
+	var areaSub = document.getElementsByName('areaSubCode[]');
+	var areaSub_cd = '';
+	for(i=0; i < areaSub.length; i++){
+		if(areaSub[i].checked){
+			areaSub[i].checked = false;
+			document.getElementById('areaSubCode_'+areaSub[i].value).next().style.backgroundColor = '';
+		}
+	}
+	f.areaSub_cd.value = '';
+	
+	//학력
+	if($('firstEdu').value){
+		f.firstEdu.value = '';
+		$('firstEdu').options[0].selected = true;
+	}
+	$('secondEdu').disabled = false;
+	if($('secondEdu').value){
+		f.secondEdu.value = '';
+		$('secondEdu').options[0].selected = true;
+	}
+	if($('educationNoneChk').checked){
+		f.educationNone.value = '';
+		$('educationNoneChk').checked = false;
+	} 
+	
+	//경력
+	var career = "";
+	var career_lv = "";
+	career = document.getElementsByName('career[]');
+	for(a=0;a<career.length;a++){
+		if(career[a].checked){
+			career[a].checked = false;
+		}
+	}
+	f.career.value='';
+	
+	if($('careerlimit1').value){
+		f.careerlimit1.value = '';
+		$('careerlimit1').options[0].selected = true;
+	}
+	if($('careerlimit2').value){
+		f.careerlimit2.value = '';
+		$('careerlimit2').options[0].selected = true;
+	} 
+	if($('careerNone').checked){
+        $('careerNone').checked = false;
+    } 
+
+	//연봉
+	if($('firstSal').value){
+		f.firstSal.value = '';
+		$('firstSal').options[0].selected = true;
+	}
+	if($('secondSal').value){
+		f.secondSal.value = '';
+		$('secondSal').options[0].selected = true;
+	}
+	if($('salaryChk').checked){
+		f.salary.value = '';
+		$('salaryChk').checked = false;
+	}
+	if($('salaryRuleChk').checked){
+		f.salaryRule.value = '';
+		$('salaryRuleChk').checked = false;
+	}
+	
+	if( $('search_quick_apply') ) {
+		$('search_quick_apply').checked = false;
+	    f.quick_apply.value = '';
+	}
+}

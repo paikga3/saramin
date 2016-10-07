@@ -1,0 +1,111 @@
+package run;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import beans.FreeBoardWriteBean;
+import controller.Action;
+import structure.Board;
+import db.BoardDAO;
+
+import java.util.*;
+import java.text.*;
+
+public class BoardRun implements Board {
+
+	@Override
+	public Action add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		request.setCharacterEncoding("UTF-8");
+		
+		BoardDAO bDAO = new BoardDAO();
+		FreeBoardWriteBean write = new FreeBoardWriteBean();
+		
+		write.setFreeboard_alias(request.getParameter(""));
+		write.setFreeboard_title(request.getParameter(""));
+		write.setFreeboard_contents(request.getParameter(""));
+		write.setFreeboard_readCount(Integer.parseInt(request.getParameter("")));
+		write.setFreeboard_recommand(Integer.parseInt(request.getParameter("")));
+		write.setFreeboard_replyCount(Integer.parseInt(request.getParameter("")));
+		//date는 DAO에서 sysdate로, 글번호는 rownum으로 자동지정합시다.
+		
+		//bDAO.글등록메소드(bBean);
+		
+		Action action = new Action();
+		action.setSimpleMove(true);
+		action.setPath("/url");
+		return action; //이해가 잘 안되는 부분으로 설명 부탁드립니다
+		
+		// Parameter들의 writer, title, content들의 밸류들로 boardBean 셋팅을 했습니다. 
+		// 최종적으로 boardBean.add를 했습니다.
+
+	}
+
+	@Override
+	public Action delete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		
+		HttpSession httpsession = request.getSession();
+		int memberno = (int) httpsession.getAttribute("member_no");
+		
+		
+	return null;	
+		// TODO Auto-generated method stu
+	}
+
+	@Override
+	public Action modify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		
+		HttpSession httpsession = request.getSession();
+		int memberno = (int) httpsession.getAttribute("member_no");
+		
+		
+		
+		return null;
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public Action list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+	request.setCharacterEncoding("UTF-8");	
+		
+	GregorianCalendar calendar = new GregorianCalendar();
+	BoardDAO bDAO = new BoardDAO();
+	
+	//bDAO.메소드()로 데이터베이스 저장된 글들의 regDate를 불러온다. 그리고 형변환으로 int date[] = 
+	
+	
+	
+		
+		
+		return null;
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public Action reply(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		return null;
+		// TODO Auto-generated method stub
+
+	}
+	
+	public Action read(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		return null;
+		// TODO Auto-generated method stub
+
+	}
+	
+	public Action recommend(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		return null;
+		// TODO Auto-generated method stub
+
+	}
+
+}

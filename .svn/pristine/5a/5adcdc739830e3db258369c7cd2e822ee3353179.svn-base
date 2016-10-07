@@ -1,0 +1,26 @@
+$('.free_sort > a:not(.free_sort_on)').hover(function() {
+	$(this).css("text-decoration", "underline");
+}, function() {
+	$(this).css("text-decoration", "none");
+});
+
+$('.free_sort > a').click(function() {
+	$(this).next('form').trigger("submit");
+	return false;
+});
+
+$('#free_numbering a').click(function() {
+	$(this).next('form').trigger('submit');
+	return false;
+});
+
+$('.free_content_subject_con > a').click(function() {
+	$(this).next('form').trigger('submit');
+	return false;
+});
+
+$('.free_content_link').hover(function() {
+	$(this).css('text-decoration', 'underline');
+}, function() {
+	$(this).css('text-decoration', 'none');
+});

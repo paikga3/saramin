@@ -1,0 +1,29 @@
+package run;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import controller.Action;
+import structure.Search;
+
+public class SearchRun implements Search {
+	
+	Action action = null;
+	
+	@Override
+	public Action ajax(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		action = new Action();
+		action.setPath("/pages/searchView/search_ajaxview.jsp");
+		action.setSimpleMove(false);
+		
+		
+		String ajaxURL = request.getParameter("u");
+		System.out.println(ajaxURL);
+		
+		return action;
+	}
+
+}

@@ -1,0 +1,4 @@
+@CHARSET "UTF-8";
+td {height: 30px;}
+.in_cal_form input[type=text] {color:black; text-align:right;}
+.in_cal_form input[type=text]:disabled {color:white; background-color:blue; }

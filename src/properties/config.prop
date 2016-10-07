@@ -1,0 +1,1 @@
+poolName=java:comp/env/jdbc/mariadb

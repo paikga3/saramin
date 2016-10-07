@@ -1,0 +1,22 @@
+<Context> 
+	<Resource name="jdbc/mariadb"  
+         auth="Container"
+         type="javax.sql.DataSource" 
+         username="user01" 
+         password="1234"
+         driverClassName="org.mariadb.jdbc.Driver"
+         url="jdbc:mariadb://share.hoonnn.org:3333/JSPProjects"
+         maxActive="100" 
+         maxIdle="10"/>  
+</Context>
+
+<!-- <Resource name="jdbc/mariadb"
+        auth="container"
+        type="javax.sql.DataSource"
+        driverClassName="org.mariadb.jdbc.Driver"
+        loginTimeout="10"
+        maxWait="5000"
+        username="servlet"
+        password="servlet"
+        testOnBorrow="true"
+        url="jdbc:mariadb://localhost:3306/servlet" /> -->

@@ -1,0 +1,132 @@
+function check(f, url){
+	var chk = 0;
+	if($('#jsp')[0].checked) {
+		f.keyword_cd.value = '40403';
+	} else if($('#java')[0].checked) {
+		f.keyword_cd.value = '40404';
+	}
+	//서울
+	f.area_cd.value = '101000';
+	
+	//지역상세
+	var areaSub = document.getElementsByClassName('areaSubCode[]');
+	var areaSub_cd = '';
+	for(i=0; i < areaSub.length; i++){
+		if(areaSub[i].checked){
+			areaSub_cd = areaSub_cd+areaSub[i].value+"|";
+			chk++;
+		}
+	}
+	f.areaSub_cd.value = areaSub_cd.substring(0, areaSub_cd.length-1);
+	
+	//경력
+	var career = "";
+	var career_lv = "";
+	career = document.getElementsByClassName('career[]');
+	
+	for(a=0;a<career.length;a++){
+		if(career[a].checked){
+			career_lv=career_lv+career[a].value+"|";
+			chk++;
+		}
+	}
+	f.career.value=career_lv.substring(0,career_lv.length-1);
+	
+	
+	if(chk > 0 ){
+		f.list.value= "search";
+		//f.submit();
+	}else{
+		f.list.value= "";
+		//f.submit();
+		
+	}
+	$('.row, .clear').remove();
+	$('.margin').hide();
+	$.ajax({
+		url : url + "/ajax.search",
+		data : {
+			u : $(f).serialize()
+		},	
+		dataType : "html",
+		method : "post",
+		success : function(data) {
+			data = data.substring("  <!DOCTYPE html>".length);
+			$('#test').text(data);
+			var $parsingData = $(data).find("#jobboard_basic tr").filter(function() {
+				var id = $(this).attr('id');
+
+				if(typeof id === 'string') {
+					if(id.indexOf('rec-') != -1) {
+						return true;
+					} else {
+						return false;
+					}
+				}
+			});
+			
+			var pageList = $(data).find('#default_list_wrap').find('.paging-wrap').find('.rec-paging');
+			pageList.find('span').each(function() {
+				if($(this).find('a').attr('href')) {
+					var href = $(this).find('a').attr('href');
+					href = "http://www.saramin.co.kr" + href;
+					$(this).find('a').attr('href', href);
+				}
+			});
+			
+			$parsingData.each(function() {
+				var title = $(this).find('td').find('.corp_name').find('.company_name').find('a')
+				.find('span').text() ? $(this).find('td').find('.corp_name').find('.company_name').find('a')
+						.find('span').text() : $(this).find('td').find('.corp_name').find('.company_name').find('span').text();
+				var subject = $(this).find('td').find('.corp-con').find('.corp-tit').find('.link_title_recruit')
+				.find('span').text();
+				var subway = $(this).find('td').find('.corp-con').find('ul').find('li').find('span').eq(0).text();
+				var job_form = $(this).find('td').find('.corp-con').find('ul').find('li').find('span').eq(1).text();
+				var condition = $(this).find('td').find('.member-type').find('li').eq(0).text();
+				var academic = $(this).find('td').find('.member-type').find('li').eq(1).text();
+				var modifyTime = $(this).find('td').eq(3).html();
+				var dedline = $(this).find('td').eq(4).html();
+				var count = $(this).find('td').eq(5).text();
+				$('#jobs_list').append(
+						"<ul class='row'>" +
+							"<li class='contents' style='width:20%;'><p class='line1'>" + title + "</p></li>" +
+							"<li class='contents' style='width:40%;'><p class='line2'>" + subject + "</p>" +
+									"<p><span>" + subway + "</span><span>" + job_form +"</p></li>" +
+							"<li class='contents' style='width:10%;'><p class='line2'>" + condition + "</p>" +
+									"<p class='text'>"+ academic + "</p></li>" +
+							"<li class='contents' style='width:10%;'><p class='line2'>" + modifyTime + "</p></li>" +
+							"<li class='contents' style='width:10%;'><p class='line2'>" + dedline + "</p></li>" +
+							"<li class='contents' style='width:10%;'><p class='line1'>" + count + "</p></li>" +
+							"</ul>"
+						);
+			});
+			
+			if($parsingData.length == 50) {
+				$('#number').html(pageList);
+			}
+			$('.margin').show();
+		},
+		error: function (jqXHR, textStatus, errorThrown) {
+            alert("에러" + textStatus + errorThrown);
+            isAjax = false;
+        }	
+	});	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

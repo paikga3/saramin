@@ -1,0 +1,109 @@
+package db;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
+
+import beans.AdviceBean;
+import javafx.application.Application;
+
+public class AdminDAO {
+	DataSource ds;
+	Connection con;
+	PreparedStatement ps;
+	ResultSet rs;
+	ArrayList<AdviceBean> list = new ArrayList<AdviceBean>();
+	AdviceBean AB = null;
+	
+	public AdminDAO() {
+		try {
+			Context init = new InitialContext();
+			ds = (DataSource) init.lookup("java:comp/env/jdbc/mariadb");
+			System.out.println("DB 연결 Ok");
+
+		} catch (Exception e) {
+			System.out.println("DB 연결 실패 : " + e);
+			return;
+		}
+	}
+	
+	
+	public void viewList(HttpServletRequest request, HttpServletResponse response) {
+		// 페이지당 글 수
+		int countPerPage = 10;
+		
+		// 조인하여 정렬해서 가져오는 쿼리, 최근 날짜 순
+		// 글번호, 상담종류, 신청인이름, 상담신청날짜, 조회수, 답글수
+		String set = "SET @ROWNUM := 0";
+		String sql = 
+				"SELECT "
+				+ "ro, " //1
+				+ "member_no, " //2
+				+ "advice_no, " //3
+				+ "advice_type, " //4
+				+ "advice_content, " //5
+				+ "DATE_FORMAT(advice_date, '%y-%m-%d %H:%i') advice_date_s, " //6
+				+ "DATE_FORMAT(advice_redate, '%y-%m-%d %H:%i') advice_redate_s, " //7
+				+ "advice_count, " //8
+				+ "advice_re_count, " //9
+				+ "member_email, " //10
+				+ "member_pw, " //11
+				+ "member_name " //12
+				+ "FROM "
+						+ "(SELECT "
+						+ "(@ROWNUM := @ROWNUM + 1) AS ro, "
+						+ "advlist.* "
+						+ "FROM "
+								+ "(SELECT * FROM ADVICE adv INNER JOIN MEMBER mbr USING (member_no)) AS advlist "
+								+ "ORDER BY advlist.advice_no DESC) AS advlistordered "
+				+ "WHERE ro BETWEEN ? AND ?";
+		
+		try {
+			con = ds.getConnection();
+			// SET 쿼리 실행
+			ps = con.prepareStatement(set);
+			ps.executeQuery();
+			
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, 1);
+			ps.setInt(2, 12);
+			rs = ps.executeQuery();
+			
+			while(rs.next()){
+				AB = new AdviceBean();
+						
+				AB.setMember_no(rs.getInt(2));
+				AB.setAdvice_no(rs.getInt(3));
+				AB.setAdvice_type(rs.getString(4));
+				AB.setAdvice_content(rs.getString(5));
+				AB.setAdvice_date(rs.getString(6));
+				AB.setAdvice_redate(rs.getString(7));
+				AB.setAdvice_count(rs.getInt(8));
+				AB.setAdvice_re_count(rs.getInt(9));
+				AB.setMember_email(rs.getString(10));
+				AB.setMember_name(rs.getString(12));
+				
+				list.add(AB);
+			}
+			
+			request.setAttribute("adviceArrayist", list);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+	
+		}finally {
+			if(rs!=null) try{rs.close();}catch(SQLException ex){}
+			if(ps!=null) try{ps.close();}catch(SQLException ex){}
+			if(con!=null) try{con.close();}catch(SQLException ex){}
+		}
+	}
+
+}

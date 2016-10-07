@@ -1,0 +1,27 @@
+package structure;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import controller.Action;
+
+public interface Admin {
+
+	public Action exe(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
+
+	public Action reView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
+
+	public Action insert(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
+
+	public void plusCount(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException;
+
+	public Action insertRe(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException;
+
+	public Action delete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
+
+}

@@ -1,0 +1,269 @@
+package db;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Properties;
+
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+import beans.FreeBoardWriteBean;
+
+public class FreeBoardDAO {
+	
+	private DataSource ds;
+	private Connection con;
+	private PreparedStatement ps;
+	private ResultSet rs;
+	private String sql;
+	
+	/*	 
+	 
+	 한 페이지당 글의 갯수는 20개입니다.
+	 
+	 add메소드(게시글 입력), delete(게시글 삭제), update(게시글 수정)
+	 위 3개 메서드는 매개변수로 빈객체를 받습니다. 빈객체의 setter메서드를 모두 호출할 필요는 없고
+	 각 메서드에 맞게 필요한 것만 넣으면 되겠습니다. 
+	 필수사항에 대한 언급은 각 메서드에서 명시하였습니다.
+	  
+	 */
+
+	public FreeBoardDAO() {
+		try {
+			InitialContext init = new InitialContext();
+			Properties prop = new Properties();
+			prop.load(this.getClass().getResourceAsStream("../config.prop"));
+			ds = (DataSource)init.lookup(prop.getProperty("poolName"));
+			System.out.println("DataSource 얻어오기 성공");
+		} catch (NamingException | IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 add메서드 필요사항 - 별칭, 글제목, 글내용
+	 
+	 글번호는 글의 총갯수에 +1을 하여 자동으로 넣어줍니다.
+	 조회수, 답글수, 추천수는 처음 글을 입력할 때에는 0입니다.
+	 글 등록 시점은 mariaDB의 now()메서드로 입력합니다.
+	 */
+	public void add(FreeBoardWriteBean bean) {
+		try {
+			sql = "select count(*)+1 from FREEBOARD_WRITE";
+			con = ds.getConnection();
+			ps = con.prepareStatement(sql);
+			rs = ps.executeQuery();
+			rs.next();
+			bean.setFreeboard_no(rs.getInt(1));
+			bean.setFreeboard_readCount(0);
+			bean.setFreeboard_recommand(0);
+			bean.setFreeboard_replyCount(0);
+			sql = "insert into FREEBOARD_WRITE(FREEBOARD_NO,FREEBOARD_REPLYCOUNT,FREEBOARD_READCOUNT," 
+					+ "FREEBOARD_RECOMMAND,FREEBOARD_ALIAS,FREEBOARD_TITLE,FREEBOARD_CONTENTS," 
+					+ "FREEBOARD_REGDATE) values(?,?,?,?,?,?,?,now())";
+			
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, bean.getFreeboard_no());
+			ps.setInt(2, bean.getFreeboard_replyCount());
+			ps.setInt(3, bean.getFreeboard_readCount());
+			ps.setInt(4, bean.getFreeboard_recommand());
+			ps.setString(5, bean.getFreeboard_alias());
+			ps.setString(6, bean.getFreeboard_title());
+			ps.setString(7, bean.getFreeboard_contents());
+			int result = ps.executeUpdate();
+			if(result != 0) {
+				System.out.println("자유게시판 글등록 성공");
+			} else {
+				System.out.println("자유게시판에 0개 글 등록");
+			}
+		} catch (SQLException e) {
+			System.out.println("자유게시판 글등록 오류");
+			e.printStackTrace();
+		} finally {
+			if(rs != null) try { rs.close();} catch (SQLException e) {}
+			if(ps != null) try { ps.close();} catch (SQLException e) {}
+			if(con != null) try { con.close();} catch (SQLException e){}
+		}
+	}
+	
+	// delete 메서드는 bean객체에 글번호만 있으면 됩니다.	
+	public void delete(FreeBoardWriteBean bean) {
+		sql = "delete from FREEBOARD_WRITE where FREEBOARD_NO = ?";
+		try {
+			con = ds.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, bean.getFreeboard_no());
+			int result = ps.executeUpdate();
+			if(result != 0) {
+				System.out.println("자유게시판 글 삭제");
+			} else {
+				System.out.println("해당번호에 대한 글이 없어 삭제 안함");
+			}
+		} catch (SQLException e) {
+			System.out.println("자유게시판 글삭제 오류");
+			e.printStackTrace();
+		} finally {
+			if(rs != null) try { rs.close();} catch (SQLException e) {}
+			if(ps != null) try { ps.close();} catch (SQLException e) {}
+			if(con != null) try { con.close();} catch (SQLException e){}
+		}	
+	}
+	
+	// update 메서드는 bean객체에 글번호와 글내용만 있으면 됩니다.
+	public void update(FreeBoardWriteBean bean) {
+		sql = "update FREEBOARD_WRITE set FREEBOARD_CONTENTS = ? where FREEBOARD_NO = ?";
+		try {
+			con = ds.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setString(1, bean.getFreeboard_contents());
+			ps.setInt(2, bean.getFreeboard_no());
+			int result = ps.executeUpdate();
+			if(result != 0) {
+				System.out.println("자유게시판 글 수정 완료");
+			} else {
+				System.out.println("자유게시판 글 수정 된거 없음");
+			}
+		} catch (SQLException e) {
+			System.out.println("자유게시판 글수정 오류");
+			e.printStackTrace();
+		} finally {
+			if(rs != null) try { rs.close();} catch (SQLException e) {}
+			if(ps != null) try { ps.close();} catch (SQLException e) {}
+			if(con != null) try { con.close();} catch (SQLException e){}
+		}
+	}
+	
+	// 해당 글번호의 글정보를 담고 있는 빈객체를 반환한다.
+	public FreeBoardWriteBean detail(int freeBoard_no) {
+		sql = "select FREEBOARD_NO,FREEBOARD_REPLYCOUNT,FREEBOARD_READCOUNT,"
+					+ "FREEBOARD_RECOMMAND,FREEBOARD_ALIAS,FREEBOARD_TITLE,FREEBOARD_CONTENTS,"
+					+ "DATE_FORMAT(FREEBOARD_REGDATE, '%Y-%m-%d %h:%m:%s') as FREEBOARD_REGDATE "
+					+ "from FREEBOARD_WRITE where FREEBOARD_NO = ?";
+		try {
+			con = ds.getConnection();
+			ps = con.prepareStatement(sql);
+			rs = ps.executeQuery();
+			if(rs.next()) {
+				FreeBoardWriteBean bean = new FreeBoardWriteBean();
+				bean.setFreeboard_no(rs.getInt("FREEBOARD_NO"));
+				bean.setFreeboard_replyCount(rs.getInt("FREEBOARD_REPLYCOUNT"));
+				bean.setFreeboard_readCount(rs.getInt("FREEBOARD_READCOUNT"));
+				bean.setFreeboard_recommand(rs.getInt("FREEBOARD_RECOMMAND"));
+				bean.setFreeboard_alias(rs.getString("FREEBOARD_ALIAS"));
+				bean.setFreeboard_title(rs.getString("FREEBOARD_TITLE"));
+				bean.setFreeboard_contents(rs.getString("FREEBOARD_CONTENTS"));
+				bean.setFreeboard_regDate(rs.getString("FREEBOARD_REGDATE"));
+				return bean;
+			}
+		} catch (SQLException e) {
+			System.out.println("자유게시판 글 상세보기");
+			e.printStackTrace();
+		} finally {
+			if(rs != null) try { rs.close();} catch (SQLException e) {}
+			if(ps != null) try { ps.close();} catch (SQLException e) {}
+			if(con != null) try { con.close();} catch (SQLException e){}
+		}
+		return null;
+	}
+	
+	// 게시물의 총 갯수를 반환합니다.
+	public int getTotalWritings() {
+		sql = "select count(*) from FREEBOARD_WRITE";
+		int totalWritings = 0;
+		try {
+			con = ds.getConnection();
+			ps = con.prepareStatement(sql);
+			rs = ps.executeQuery();
+			if(rs.next()) {
+				totalWritings = rs.getInt(1);
+			}	
+		} catch (SQLException e) {
+			System.out.println("자유게시판 전체글 갯수 읽어오기 오류");
+			e.printStackTrace();
+		} finally {
+			if(rs != null) try { rs.close();} catch (SQLException e) {}
+			if(ps != null) try { ps.close();} catch (SQLException e) {}
+			if(con != null) try { con.close();} catch (SQLException e){}
+		}
+		
+		return totalWritings;
+	}
+	
+	
+	// 게시판의 총페이지 수(=마지막 페이지)를 반환합니다.
+	public int getTotalPageNum() {
+		int totalWritings = getTotalWritings();
+		int totalPage = totalWritings % 20 == 0 ? totalWritings/20 : totalWritings/20 + 1; 
+		return totalPage;
+	}
+	
+	// 해당페이지의 글들을 가져옵니다. 글은 ArrayList에 담겨서 반환되며
+	// page만 입력하면 ROWNUM의 시작과 끝을 자동으로 계산하게 구현하였습니다.
+	public ArrayList<FreeBoardWriteBean> getList(int page) {
+		ArrayList<FreeBoardWriteBean> list = new ArrayList<>();
+		/*
+		 테스트 쿼리
+select free.* from
+(select @rownum:=@rownum+1 as 
+ROWNUM,FREEBOARD_NO,FREEBOARD_REPLYCOUNT,FREEBOARD_READCOUNT,FREEBOARD_RECOMMAND,
+FREEBOARD_ALIAS,FREEBOARD_TITLE,FREEBOARD_CONTENTS, 
+DATE_FORMAT(FREEBOARD_REGDATE, '%Y-%m-%d %h:%m:%s') as FREEBOARD_REGDATE
+from FREEBOARD_WRITE order by FREEBOARD_REGDATE desc) 
+as free, (select @rownum:=0) as r
+where ROWNUM >=2 and ROWNUM <=7;
+		 
+		 */
+		sql = "select free.* from"
+				+ "(select @rownum:=@rownum+1 as"
+				+ "ROWNUM,FREEBOARD_NO,FREEBOARD_REPLYCOUNT,FREEBOARD_READCOUNT,FREEBOARD_RECOMMAND,"
+				+ "FREEBOARD_ALIAS,FREEBOARD_TITLE,FREEBOARD_CONTENTS,"
+				+ "DATE_FORMAT(FREEBOARD_REGDATE, '%Y-%m-%d %h:%m:%s') as FREEBOARD_REGDATE"
+				+ "from FREEBOARD_WRITE order by FREEBOARD_REGDATE desc)"
+				+ "as free, (select @rownum:=0) as r"
+				+ "where ROWNUM >=? and ROWNUM <=?";
+		try {
+			int last_page = getTotalPageNum();
+			int totalWritings = getTotalWritings();
+			int start_rownum = page * 20 - 19;
+			int end_rownum = last_page == page ? (start_rownum-1) + totalWritings%20 : page * 20;
+			con = ds.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, start_rownum);
+			ps.setInt(2, end_rownum);
+			rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				FreeBoardWriteBean bean = new FreeBoardWriteBean();
+				bean.setFreeboard_no(rs.getInt("FREEBOARD_NO"));
+				bean.setFreeboard_replyCount(rs.getInt("FREEBOARD_REPLYCOUNT"));
+				bean.setFreeboard_readCount(rs.getInt("FREEBOARD_READCOUNT"));
+				bean.setFreeboard_recommand(rs.getInt("FREEBOARD_RECOMMAND"));
+				bean.setFreeboard_alias(rs.getString("FREEBOARD_ALIAS"));
+				bean.setFreeboard_title(rs.getString("FREEBOARD_TITLE"));
+				bean.setFreeboard_contents(rs.getString("FREEBOARD_CONTENTS"));
+				bean.setFreeboard_regDate(rs.getString("FREEBOARD_REGDATE"));
+				list.add(bean);
+			}
+			if(list.size() == 0) {
+				System.out.println("자유게시판 페이지의 글목록이 없습니다. 빈 컬렉션을 반환합니다.");
+			} else {
+				System.out.println("자유게시판 페이지 글목록을 반환합니다.");
+			}
+			return list;
+		} catch (SQLException e) {
+			System.out.println("자유게시판 페이지 글목록 불러오기 실패");
+			e.printStackTrace();
+		} finally {
+			if(rs != null) try { rs.close();} catch (SQLException e) {}
+			if(ps != null) try { ps.close();} catch (SQLException e) {}
+			if(con != null) try { con.close();} catch (SQLException e){}
+		}	
+		return null;
+	}
+	
+}

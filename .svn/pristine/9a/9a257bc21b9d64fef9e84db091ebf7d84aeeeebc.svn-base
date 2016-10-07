@@ -1,0 +1,57 @@
+-- MySQL dump 10.13  Distrib 5.7.9, for Win64 (x86_64)
+--
+-- Host: share.hoonnn.org    Database: JSPProjects
+-- ------------------------------------------------------
+-- Server version	5.5.5-10.1.12-MariaDB
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `ADVICE`
+--
+
+DROP TABLE IF EXISTS `ADVICE`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ADVICE` (
+  `advice_no` int(11) NOT NULL,
+  `member_no` int(11) NOT NULL,
+  `advice_type` varchar(50) NOT NULL,
+  `advice_content` varchar(6000) NOT NULL,
+  `advice_date` datetime NOT NULL,
+  `advice_redate` datetime DEFAULT NULL,
+  `advice_count` int(11) NOT NULL,
+  `advice_re_count` int(11) NOT NULL,
+  PRIMARY KEY (`advice_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ADVICE`
+--
+
+LOCK TABLES `ADVICE` WRITE;
+/*!40000 ALTER TABLE `ADVICE` DISABLE KEYS */;
+INSERT INTO `ADVICE` VALUES (1,1000,'관리자','관리자','2016-04-05 16:24:40',NULL,2,0),(2,1000,'종류1','상담신청합니다1','2016-04-05 16:24:53','2016-04-05 17:13:30',5,1),(3,1000,'종류2','상담신청합니다2','2016-04-05 16:25:06','2016-04-05 17:21:46',7,3),(4,1000,'종류3','상담신청합니다3','2016-04-05 16:25:13','2016-04-05 17:13:54',2,1),(5,1000,'종류1','상담신청합니다4','2016-04-05 16:25:22','2016-04-05 17:14:01',2,1),(6,1000,'종류1','상담신청합니다5','2016-04-05 16:25:30','2016-04-05 17:14:06',3,1),(7,1000,'종류2','상담신청합니다6','2016-04-05 16:25:39','2016-04-05 17:14:13',2,1),(8,1000,'종류1','상담신청합니다7','2016-04-05 16:26:02','2016-04-05 17:15:24',2,1),(9,1000,'종류3','상담신청합니다8','2016-04-05 16:26:09','2016-04-05 17:15:16',4,1),(10,1000,'종류2','상담신청합니다9','2016-04-05 16:26:16','2016-04-05 17:15:09',4,1),(11,1000,'종류2','상담신청합니다10','2016-04-05 16:26:24','2016-04-05 17:15:03',3,1),(12,1000,'종류3','상담신청합니다11','2016-04-05 16:26:31','2016-04-05 17:14:32',5,1),(13,1000,'종류1','상담신청합니다12','2016-04-05 16:26:38','2016-04-05 17:14:49',13,2),(14,1000,'종류2','상담?','2016-04-05 16:49:41','2016-04-05 17:02:43',8,1),(15,1000,'종류3','응?','2016-04-05 17:02:14','2016-04-05 17:02:22',4,1),(16,1019,'종류1','상담신청1','2016-04-05 17:04:53',NULL,2,0),(17,1019,'종류2','상담신청2','2016-04-05 17:05:06',NULL,2,0),(18,1019,'종류1','상담신청3','2016-04-05 17:05:13',NULL,0,0),(19,1019,'종류3','상담신청4','2016-04-05 17:05:21',NULL,0,0),(21,1000,'종류1','글만들기 힘들다1','2016-04-05 17:11:04',NULL,0,0),(22,1000,'종류2','글만들기 힘들다2','2016-04-05 17:11:15',NULL,0,0),(23,1000,'종류1','글만들기 힘들다3','2016-04-05 17:11:45',NULL,0,0),(24,1000,'종류1','글만들기 힘들다4','2016-04-05 17:11:52',NULL,1,0),(25,1000,'종류3','글만들기 힘들다5','2016-04-05 17:11:59',NULL,2,0),(26,1000,'종류2','글만들기 힘들다6','2016-04-05 17:12:56',NULL,6,0),(27,1000,'종류2','글만들기 힘들다7','2016-04-05 17:13:05','2016-04-05 17:44:37',12,2),(28,1017,'종류1','ㅋㅋㅋ','2016-04-05 17:21:10','2016-04-05 17:37:31',17,1),(29,1019,'종류1','상담신청해요','2016-04-05 18:02:11','2016-04-05 18:02:20',5,1);
+/*!40000 ALTER TABLE `ADVICE` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2016-04-05 18:10:39

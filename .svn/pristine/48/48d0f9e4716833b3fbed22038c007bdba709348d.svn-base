@@ -1,0 +1,50 @@
+package beans;
+
+public class boardBean {
+
+	private int rownum;
+	private String writer;
+	private String title;
+	private String content;
+	private int rIndex;
+	private int pIndex;
+	
+	public int getRownum() {
+		return rownum;
+	}
+	public void setRownum(int rownum) {
+		this.rownum = rownum;
+	}
+	
+	public String getWriter() {
+		return writer;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public String getContent() {
+		return content;
+	}
+	public int getrIndex() {
+		return rIndex;
+	}
+	public int getpIndex() {
+		return pIndex;
+	}
+	public void setWriter(String writer) {
+		this.writer = writer;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
+	public void setrIndex(int rIndex) {
+		this.rIndex = rIndex;
+	}
+	public void setpIndex(int pIndex) {
+		this.pIndex = pIndex;
+	}	
+
+}

@@ -1,0 +1,13 @@
+CREATE TABLE LOG (
+log_no INT NOT NULL PRIMARY KEY,
+member_no INT NOT NULL,
+login_ip VARCHAR(20) NOT NULL,
+login_time DATETIME,
+logout_time DATETIME);
+
+SELECT * FROM LOG;
+
+SELECT MAX(log_no) FROM LOG log;
+INSERT INTO LOG VALUES ((SELECT MAX(log_no)+1 FROM LOG log), 1000, 'ip', SYSDATE(), null);
+
+SELECT * FROM MEMBER JOIN LOG USING (member_no);

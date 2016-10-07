@@ -1,0 +1,95 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
+	<tiles:insertDefinition name="in.header.aptitude" />
+<!-- 여기다가 작성 -->
+	페이지 이동 확인
+	 
+	
+<c:choose>
+	<c:when test="${param.score > 7 }">
+		당신은 A 타입
+	
+		<table id="screen1"   style="margin-left: auto; margin-right: auto;">
+	<tr>
+		<td>
+		<img src="image\A_image.jpg"/></br>
+		A. 나는야 활동파! 마케터</br>
+		</br>
+	 	- 낙천적이고 인정이 많은 당신은 건강하고 활동적이라 많은 사람들이 따르지요.</br>
+  		 게다가 두둑한 배짱과 대범함이 주위 사람들을 놀라게 하지요.</br>
+   		영업이나 서비스업계가 당신에게 아주 잘 맞습니다.</br>
+  		 끊임없이 진화하는 온라인을 기반으로 새로운 마케팅분야를 개척해 나가는 마케터가 되어보세요!</br>		
+		</td>
+	</tr>
+</table>
+		
+	</c:when>
+	<c:when test="${param.score > 1 && param.score < 4 }">
+		당신은 B 타입
+		
+		<table id="screen1"   style="margin-left: auto; margin-right: auto;">
+	<tr>
+		<td>
+		<img src="image\B_image.jpg"/></br>	
+		B. 무에서 유를 창조하는 도전정신! 서비스 기획자</br>
+		</br>
+ 		- 아이디어가 넘쳐 흐르는 당신!!</br>
+   		또한 사물을 세밀하게 분석하는 데도 뛰어납니다.</br>
+   		정확하게 트랜드를 분석하고 번쩍이는 아이디어로 서비스를 기획하는 서비스 기획자가 당신에게 적합할 것 같네요.</br>
+		</td>
+	</tr>
+</table>
+		
+	</c:when>
+	<c:when test="${param.score > 3 && param.score < 8 }">
+		당신은 C 타입
+		
+		<table id="screen1"   style="margin-left: auto; margin-right: auto;">
+	<tr>
+		<td>
+		<img src="image\C_image.JPG"/></br>	
+		C. 난 평범한건 싫어! 웹디자이너</br>
+		</br>
+		<font size="4">늘 장의적인 생각으로 새로운 것을 추구하고 평범함을 거부하는 당신!!</font></br>
+  		 가끔 변덕스럽기도 하지만 주변사람들에게 감각과 센스가 뛰어나단 평을 들을 거예요.</br>
+   		그 끼와 감각으로 웹사이트의 얼굴을 만들어가는 매력적인 디자이너에 지금 도전하세요!</br>
+		</td>
+	</tr>
+</table>
+		
+		
+	</c:when>
+	<c:when test="${param.score == 0 }">
+		당신은 D 타입
+		
+		<table id="screen1"   style="margin-left: auto; margin-right: auto;">
+	<tr>
+		<td>
+		<img src="image\D_image.jpg"/></br>	
+		D. 무엇이든 멋진 해결사! 프로그래머</br>
+		</br>
+		- 당신은 세심하고 논리적이며 꼼꼼한 성격을 가지고 있습니다.</br>
+ 		  또 끈기도 강해 일단 시작한 일은 마무리해야 직성이 풀리는 타입이지요.</br>
+ 		  무언가 특수한 것을 개발하거나 발명하는 일이 당신과 잘 맞습니다.</br>
+  		 대한민국을 넘어 세계로 뻗어나가는 프로그래머가 되어보세요!</br>
+		</td>
+	</tr>
+</table>
+		
+	</c:when>
+</c:choose>
+
+
+   
+ 점수 : <%=request.getParameter("score") %> 점
+ 
+ <script src="http://code.jquery.com/latest.js"></script>
+<script type="text/javascript">
+
+
+
+</script>
+</body>
+</html>

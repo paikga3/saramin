@@ -1,0 +1,97 @@
+package run;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import beans.FreeBoardWriteBean;
+import controller.Action;
+import db.FreeBoardDAO;
+import db.FreeBoardListType;
+import structure.Board;
+
+public class FreeBoardRun implements Board {
+	
+	private Action action;
+	private FreeBoardDAO dao;
+	
+	public FreeBoardRun() {
+		action = new Action();
+		dao = new FreeBoardDAO();
+	}
+	
+	@Override
+	public Action add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Action delete(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Action modify(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public Action reply(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Action listByReg(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		ArrayList<FreeBoardWriteBean> list = dao.getList(1, FreeBoardListType.FREEBOARD_REGDATE);
+		request.setAttribute("list", list);
+		request.setAttribute("type", "reg");
+		action.setPath("/pages/freeboardView/freeboardList.jsp");
+		action.setSimpleMove(false);
+		return action;
+	}
+
+	@Override
+	public Action listByReplyCount(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		ArrayList<FreeBoardWriteBean> list = dao.getList(1, FreeBoardListType.FREEBOARD_REPLYCOUNT);
+		request.setAttribute("list", list);
+		request.setAttribute("type", "reply");
+		action.setPath("/pages/freeboardView/freeboardList.jsp");
+		action.setSimpleMove(false);
+		return action;
+	}
+
+	@Override
+	public Action listByReadCount(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		ArrayList<FreeBoardWriteBean> list = dao.getList(1, FreeBoardListType.FREEBOARD_READCOUNT);
+		request.setAttribute("list", list);
+		request.setAttribute("type", "read");
+		action.setPath("/pages/freeboardView/freeboardList.jsp");
+		action.setSimpleMove(false);
+		return action;
+	}
+
+	@Override
+	public Action listByRecommand(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		ArrayList<FreeBoardWriteBean> list = dao.getList(1, FreeBoardListType.FREEBOARD_RECOMMAND);
+		request.setAttribute("list", list);
+		request.setAttribute("type", "recommand");
+		action.setPath("/pages/freeboardView/freeboardList.jsp");
+		action.setSimpleMove(false);
+		return action;
+	}
+
+}

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+  <definition name="in.header" template="/layouts/header.jsp">
+    <put-attribute name="title" value="일을 찾는 사람들" />
+  </definition>
+  <definition name="in.header.cal" extends="in.header">
+  	<put-attribute name="title" value="연봉계산기"/>
+  </definition>
+</tiles-definitions>

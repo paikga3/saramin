@@ -1,0 +1,20 @@
+package run;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import controller.Action;
+import structure.Move;
+
+public class MoveRun implements Move {
+
+	@Override
+	public Action move(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

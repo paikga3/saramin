@@ -1,0 +1,138 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
+<tiles:insertDefinition name="in.header.search" />
+<div id="in_wrapper_section">
+	<div style="width:1200px;height:1000px;display:inline-block;text-align:left;">
+	<form id="search_frm" name="search_frm" action="http://www.saramin.co.kr/zf_user/upjikjong-recruit/upjikjong-list/" method="get">
+        <!-- http://www.saramin.co.kr/zf_user/upjikjong-recruit/upjikjong-list/?career_type=&recruitform_type=classified&categoryCode=9%7C4&category_level=keyword&code=404&keyword_cd=40403&v_code=&list=search&area_cd=101000&areaSub_cd=101060&firstEdu=1&secondEdu=&educationNone=&career=1&careerlimit1=0&careerlimit2=0&firstSal=5&secondSal=&salary=&salaryRule=&quick_apply=&srchmode=s_com&searchWord= -->
+        <!-- http://www.saramin.co.kr/zf_user/upjikjong-recruit/upjikjong-list/?career_type=&recruitform_type=classified&categoryCode=9%7C4&category_level=keyword&code=404&keyword_cd=40403&v_code=&list=search&area_cd=&areaSub_cd=&firstEdu=&secondEdu=&educationNone=&career=&careerlimit1=&careerlimit2=&firstSal=&secondSal=&salary=&salaryRule=&quick_apply=&job=on&areaSubCode%5B%5D=on&firstEdu=2&career%5B%5D=on&firstSal=6 -->
+        <input type="hidden" name="career_type" value="" id="career_type">
+        <input type="hidden" name="recruitform_type" value="classified" id="recruitform_type">
+        <input type="hidden" name="categoryCode" value="9|4" id="categoryCode">
+        <input type="hidden" name="category_level" value="keyword" id="category_level">
+        <input type="hidden" name="code" value="404" id="code">
+        <input type="hidden" name="keyword_cd" value="40403" id="keyword_cd"><!-- 업직종 -->
+        <input type="hidden" name="v_code" value="" id="v_code">
+        <input type="hidden" name="list" value="search" id="list">
+        <input type="hidden" name="area_cd" value="" id="area_cd">
+        <input type="hidden" name="areaSub_cd" value="" id="areaSub_cd">
+        <input type="hidden" name="firstEdu" value="" id="firstEdu">
+        <input type="hidden" name="secondEdu" value="" id="secondEdu">
+        <input type="hidden" name="educationNone" value="" id="educationNone">
+        <input type="hidden" name="career" value="" id="career">
+        <input type="hidden" name="careerlimit1" value="" id="careerlimit1">
+        <input type="hidden" name="careerlimit2" value="" id="careerlimit2">
+        <input type="hidden" name="firstSal" value="" id="firstSal">
+        <input type="hidden" name="secondSal" value="" id="secondSal">
+        <input type="hidden" name="salary" value="" id="salary">
+        <input type="hidden" name="salaryRule" value="" id="salaryRule">
+        <input type="hidden" name="quick_apply" value="" id="quick_apply">
+        <input type="hidden" name="area[]" value="101000" id="area_101000">
+        <div id="form_div" style="background: #81E281;">
+            <div id="title" style="border-bottom:1px solid black;padding-top:15px;padding-bottom:15px;">
+                <span class="choice">검색조건</span>
+            </div>
+            <div class="choice" style="margin-top:10px;">
+                <div>
+                    <span>직종선택</span>
+                </div>
+                <div>
+                    <span>
+                        <input type="radio" id="jsp" name="job"/>
+                        <label for="jsp">JSP</label><!-- 40403 -->
+                    </span>
+                    <span style="margin-left:300px;">
+                        <input type="radio" id="java" name="job"/>
+                        <label for="java">JAVA</label><!-- 40404 -->
+                    </span>
+                </div>
+            </div>
+
+            <div class="choice" style="margin-top:10px;">
+                <div>
+                    <span>지역(서울)</span>
+                </div>
+                <div>
+                	<span>
+                        <input type="checkbox" name="areaSubCode[]" id="areaSubCode_101060" value="101060"/>
+                        <label for="areaSubCode_101060">광진구</label>
+                    </span>
+                    <span style="margin-left:150px;">
+                        <input type="checkbox" name="areaSubCode[]" id="areaSubCode_101080" value="101080"/>
+                        <label for="areaSubCode_101080">금천구</label>
+                    </span>
+                    <span style="margin-left:150px;">
+                        <input type="checkbox" name="areaSubCode[]" id="areaSubCode_101140" value="101140"/>
+                        <label for="areaSubCode_101140">서대문구</label>
+                    </span>                
+                </div>
+            </div>
+
+            <div class="choice" style="margin-top:10px;">
+                <div>
+                    <span>학력</span>
+                </div>
+                <div>
+                    <select id="firstEdu" name="firstEdu">
+                        <option>선택</option>
+                        <option value="1">고등학교 졸업</option>
+                        <option value="2">대학졸업(2,3년)</option>
+                        <option value="3">대학졸업(4년)</option>
+                        <option value="4">석사 졸업</option>
+                        <option value="5">박사 졸업</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="choice" style="margin-top:10px;">
+                <div>
+                    <span>경력</span>
+                </div>
+                <div>
+                    <span>
+                        <input type="checkbox" name="career[]" id="careerNew" />
+                        <label for="careerNew">신입</label>
+                    </span>
+                    <span style="margin-left:150px;">
+                        <input type="checkbox" name="career[]" id="careerExp" />
+                        <label for="careerExp">경력</label>
+                    </span>
+                    <span style="margin-left:150px;">
+                        <input type="checkbox" name="career[]" id="careerNone" />
+                        <label for="careerNone">경력무관</label>
+                    </span>
+                </div>
+            </div>
+
+            <div class="choice" style="margin-top:10px;">
+                <div>
+                    <span>연봉</span>
+                </div>
+                <div>
+                    <select id="firstSal" name="firstSal">
+                        <option>선택</option>
+                        <option value="5">1800만원이상</option>
+                        <option value="6">2000만원이상</option>
+                        <option value="7">2200만원이상</option>
+                        <option value="8">2400만원이상</option>
+                        <option value="9">2600만원이상</option>
+                        <option value="10">2800만원이상</option>
+                        <option value="11">3000만원이상</option>
+                        <option value="16">4000만원이상</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="choice" style="padding-top:10px;padding-bottom:10px;">
+                <input type="button" value="선택한 조건으로 검색하기" style="padding-top:10px;padding-bottom:10px;border-radius:5px;background-color:#EA9357; border-style:none;"/>
+            </div>
+        </div>
+       </form>
+        <div id="search_result">
+        	결과화면!
+        </div>
+    </div>
+</div>
+</body>
+</html>

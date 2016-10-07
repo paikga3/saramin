@@ -1,0 +1,125 @@
+package run;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.json.simple.JSONObject;
+
+import beans.LogBean;
+import beans.MemberBean;
+import controller.Action;
+import db.MemberDAO;
+import structure.Member;
+
+public class MemberRun implements Member {
+	private int member = 0;
+	// 0 비회원, -1 비빌번호 불일치, 1 회원(로그인 가능)
+
+	MemberBean MB = new MemberBean();
+	LogBean LB = new LogBean();
+	MemberDAO MD = new MemberDAO();
+
+	@Override
+	public Action memberCheck(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		// DB에서 회원정보 확인
+		member = MD.memberCheck(request, MB);
+
+		return null;
+	}
+
+	@Override
+	public Action login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Action action = new Action();
+
+		if (member == 0) {
+			// 비회원
+			request.setAttribute("loginResult", 0);
+			action.setSimpleMove(false);
+			action.setPath("/pages/memberView/loginMenu.jsp");
+
+		} else if (member == -1) {
+			// 비빌번호 불일치
+			request.setAttribute("loginResult", -1);
+			action.setSimpleMove(false);
+			action.setPath("/pages/memberView/loginMenu.jsp");
+
+		} else if (member == 1) {
+			// 세션에 로그인한 회원 번호 set
+			request.getSession().setAttribute("member_no", MB.getMember_no());
+			System.out.println("로그인 완료, 세션 저장");
+			request.getSession().setAttribute("loginResult", 1);
+			action.setSimpleMove(false);
+			action.setPath("/pages/memberView/loginMenu.jsp");
+		}
+
+		return action;
+
+	}
+
+	public void realtimeEmailCheck(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		// String email = request.getParameter("email");
+		JSONObject obj = new JSONObject();
+
+		member = MD.realtimeEmailCheck(request, MB);
+
+		if (member == 1) {
+			obj.put("emailCheckResult", "<strong><font color=\"red\">해당 이메일이 존재합니다. 다시 입력해 주세요.</font></strong>");
+			obj.put("state", 0);
+		} else if (member == 0) {
+			obj.put("emailCheckResult", "<strong><font color=\"blue\">가입 가능한 이메일 입니다.</font></strong>");
+			obj.put("state", 1);
+		}
+
+		response.setContentType("application/x-json; charset=UTF-8");
+		response.getWriter().print(obj);
+
+	}
+
+	@Override
+	public Action join(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Action action = new Action();
+		
+		MB.setMember_email(request.getParameter("email"));
+		MB.setMember_pw(request.getParameter("pw"));
+		MB.setMember_name(request.getParameter("name"));
+		
+		// DB에 회원정보 입력
+		MD.insertMemberInfo(request, MB);
+		
+		action.setSimpleMove(false);
+		action.setPath("/");
+		return action;
+	}
+
+	public void log(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		MD.loginWrite(request);
+
+	}
+
+	public void realtimeNameCheck(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// String email = request.getParameter("email");
+		JSONObject obj = new JSONObject();
+
+		member = MD.realtimeNameCheck(request, MB);
+		if (member == 1) {
+			obj.put("nameCheckResult", "<strong><font color=\"red\">해당 이름이 존재합니다. 다시 입력해 주세요.</font></strong>");
+			obj.put("state", 0);
+		} else if (member == 0) {
+			obj.put("nameCheckResult", "<strong><font color=\"blue\">가입 가능한 이름 입니다.</font></strong>");
+			obj.put("state", 1);
+		}
+
+		response.setContentType("application/x-json; charset=UTF-8");
+		response.getWriter().print(obj);
+	}
+
+}

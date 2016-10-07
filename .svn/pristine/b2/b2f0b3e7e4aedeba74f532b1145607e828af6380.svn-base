@@ -1,0 +1,42 @@
+function check(f){
+	var chk = 0;
+	if($('#jsp')[0].checked) {
+		f.keyword_cd.value = '40403';
+	} else if($('#java')[0].checked) {
+		f.keyword_cd.value = '40404';
+	}
+	//서울
+	f.area_cd.value = '101000';
+	
+	//지역상세
+	var areaSub = document.getElementsByClassName('areaSubCode[]');
+	var areaSub_cd = '';
+	for(i=0; i < areaSub.length; i++){
+		if(areaSub[i].checked){
+			areaSub_cd = areaSub_cd+areaSub[i].value+"|";
+			chk++;
+		}
+	}
+	f.areaSub_cd.value = areaSub_cd.substring(0, areaSub_cd.length-1);
+	
+	//경력
+	var career = "";
+	var career_lv = "";
+	career = document.getElementsByClassName('career[]');
+	
+	for(a=0;a<career.length;a++){
+		if(career[a].checked){
+			career_lv=career_lv+career[a].value+"|";
+			chk++;
+		}
+	}
+	f.career.value=career_lv.substring(0,career_lv.length-1);
+	
+	if(chk > 0 ){
+		f.list.value= "search";
+		f.submit();
+	}else{
+		f.list.value= "";
+		f.submit();
+	}
+}

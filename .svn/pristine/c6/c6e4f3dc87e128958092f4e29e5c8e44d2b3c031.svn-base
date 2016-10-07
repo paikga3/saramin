@@ -1,0 +1,14 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
+<tiles:insertDefinition name="in.header.freeboard" />
+	<div id="in_wrapper_section">
+		<!-- 
+			내용 넣으세요 , 가운데 정렬되있으니 변경하고 싶으면 바꾸세요. 제이쿼리는 포함되있구 나머지 js는 js폴더에 추가해서 src로 불러가지고 사용하세요
+			css는 css/in_freeboardList.css 에 추가하시면 되요.
+			메인링크처리는 프론트컨트롤러에서 설정하시고 layouts/header.jsp 에 가서 링크추가하시면 되요.
+		-->
+
+	</div>
+</body>
+</html>
